@@ -1,0 +1,35 @@
+<svg width="200" height="200" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <radialGradient id="grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgb(20, 206, 162)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="rgb(20, 206, 162)" stop-opacity="0.4"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer dashed reel (lebih cepat) -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#grad)" stroke-width="6" stroke-dasharray="6 12" filter="url(#glow)">
+    <animate attributeName="stroke-dashoffset" from="0" to="18" dur="0.3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Inner hub -->
+  <circle cx="60" cy="60" r="20" fill="none" stroke="rgb(20, 206, 162)" stroke-width="4" filter="url(#glow)">
+    <animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="3.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Rotating film holes -->
+  <g transform="rotate(0 60 60)">
+    <circle cx="60" cy="25" r="4" fill="rgb(20, 206, 162)"/>
+    <circle cx="60" cy="95" r="4" fill="rgb(20, 206, 162)"/>
+    <circle cx="25" cy="60" r="4" fill="rgb(20, 206, 162)"/>
+    <circle cx="95" cy="60" r="4" fill="rgb(20, 206, 162)"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="6s" repeatCount="indefinite"/>
+  </g>
+</svg>
