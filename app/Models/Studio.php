@@ -40,6 +40,6 @@ class Studio extends Model
 
     public function seats()
     {
-        return $this->hasMany(StudioSeat::class);
+        return $this->hasMany(Seat::class);
     }
 }

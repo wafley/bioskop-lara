@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StudioSeat extends Model
+class Seat extends Model
 {
     protected $guarded = ["id"];
 
