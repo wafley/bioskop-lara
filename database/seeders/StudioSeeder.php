@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Studio;
-use App\Models\StudioSeat;
+use App\Models\Seat;
 use Illuminate\Database\Seeder;
 
 class StudioSeeder extends Seeder
@@ -42,7 +42,7 @@ class StudioSeeder extends Seeder
                         $seatCode = $rowLetter . str_pad($col, 2, '0', STR_PAD_LEFT);
                     }
 
-                    StudioSeat::create([
+                    Seat::create([
                         'seat_code' => $seatCode,
                         'type'      => $type,
                         'row'       => $row,
