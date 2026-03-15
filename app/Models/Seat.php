@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seat extends Model
 {
+    protected $table = "studio_seats";
     protected $guarded = ["id"];
 
     public function getSectionAttribute()
