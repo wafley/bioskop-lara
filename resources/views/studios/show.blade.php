@@ -26,7 +26,7 @@
                             </small>
                         </div>
                         <div class="d-flex align-items-center gap-2">
-                            <a href="{{ route('studios.edit', $studio->slug) }}" class="btn btn-info disabled spa-link">
+                            <a href="{{ route('studios.edit', $studio->slug) }}" class="btn btn-info spa-link">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                             <button class="btn btn-danger" data-ajax="delete" data-url="{{ route('studios.destroy', $studio->slug) }}">
