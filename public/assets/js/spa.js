@@ -91,7 +91,7 @@ function ajaxRequest({
                 }
 
                 if (isSuccess) {
-                    setTimeout(() => handleRedirect(res), 3000);
+                    setTimeout(() => handleRedirect(res), 300);
                     return;
                 }
 
