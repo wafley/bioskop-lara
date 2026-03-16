@@ -87,12 +87,14 @@
 
                     <div class="card custom-card border">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between w-100">
+                            <div class="d-flex justify-content-between align-items-center w-100">
                                 <div>
                                     <h4 class="card-title">Layout Kursi</h4>
                                     <span class="fw-bold text-primary w-100">Total {{ $studio->capacity }} Kursi</span>
                                 </div>
-                                <span class="fw-bold text-muted">{{ $rows }} x {{ $cols }}</span>
+                                <span class="badge bg-secondary fw-bold">
+                                    Konfigurasi: {{ $studio->rows }} x {{ $studio->cols }}
+                                </span>
                             </div>
                         </div>
                         <div class="card-body">

@@ -105,8 +105,8 @@
                                 <span class="fw-bold text-primary">Total {{ $studio->capacity }} Kursi</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
-                                <span id="layout-label" class="fw-bold text-muted">
-                                    {{ $studio->rows ?? 0 }} x {{ $studio->cols ?? 0 }}
+                                <span class="badge bg-secondary fw-bold">
+                                    Konfigurasi: {{ $studio->rows }} x {{ $studio->cols }}
                                 </span>
 
                                 @if (!$studio->seats->contains('type', 'vip'))
