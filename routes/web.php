@@ -43,9 +43,8 @@ Route::middleware('auth')->group(function () {
         // Studios Route
         Route::get('/studios/data', [StudioController::class, 'data'])->name('studios.data');
         Route::resource('studios', StudioController::class);
-
-        // Seats Route
-        Route::post('/seats/render', [SeatsController::class, 'render'])->name('seats.render');
+        Route::post('/studios/render-seats', [StudioController::class, 'renderSeats'])->name('studios.render');
+        Route::post('/studios/{studio}/add-vip', [StudioController::class, 'addVip'])->name('studios.add-vip');
     });
 
     // Logout Route

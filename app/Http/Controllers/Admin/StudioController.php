@@ -54,6 +54,47 @@ class StudioController extends Controller
     }
 
     /**
+     * Method to handle AJAX Preview seats
+     */
+    public function renderSeats(Request $request)
+    {
+        $rows = (int) $request->rows;
+        $cols = (int) $request->cols;
+        $generateVip = filter_var($request->generate_vip ?? false, FILTER_VALIDATE_BOOLEAN);
+
+        if ($rows <= 0 || $cols <= 0) {
+            return response()->json([
+                'html' => '<p class="text-muted text-center">Masukkan jumlah baris & kolom untuk menampilkan preview kursi.</p>',
+                'total' => 0,
+                'size' => "0 x 0",
+                'has_vip' => false
+            ]);
+        }
+
+        $result = $this->studioService->renderSeatsPreview($rows, $cols, $generateVip);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Method to add VIP to an existing studio
+     */
+    public function addVip(Studio $studio)
+    {
+        if ($this->studioService->generateVipSeats($studio)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Kursi VIP berhasil di-generate!'
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Gagal meng-generate kursi VIP.'
+        ], 500);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
@@ -120,8 +161,12 @@ class StudioController extends Controller
      */
     public function edit(Request $request, Studio $studio)
     {
+        $studio->load('seats');
+        $seats = $studio->seats->groupBy('row');
+
         $data = [
             'studio' => $studio,
+            'seats'  => $seats,
         ];
 
         return spaRender($request, 'studios.edit', $data);
@@ -132,7 +177,24 @@ class StudioController extends Controller
      */
     public function update(Request $request, Studio $studio)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'status' => 'required|boolean',
+        ]);
+
+        if ($this->studioService->updateStudio($studio, $validated)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Studio berhasil diperbarui!',
+                'redirect' => route('studios.show', $studio->slug),
+                'redirect_type' => 'spa',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Gagal memperbarui data.'
+        ], 500);
     }
 
     /**
@@ -144,7 +206,8 @@ class StudioController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Studio berhasil dihapus!',
-                'redirect_type' => 'reload',
+                'redirect' => route('studios.index'),
+                'redirect_type' => 'spa',
             ]);
         }
 

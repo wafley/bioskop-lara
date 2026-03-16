@@ -99,7 +99,7 @@
             }
 
             ajaxRequest({
-                url: "{{ route('seats.render') }}",
+                url: "{{ route('studios.render') }}",
                 method: "POST",
                 data: {
                     rows: rows,
