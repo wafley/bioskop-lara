@@ -85,10 +85,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ route('studios.show', $studio->slug) }}" class="btn btn-secondary spa-link">Batal</a>
                         <button type="submit" class="btn btn-primary">
                             Simpan
                         </button>
+                        <a href="{{ route('studios.show', $studio->slug) }}" class="btn btn-secondary spa-link">Batal</a>
                     </div>
                 </div>
             </div>
