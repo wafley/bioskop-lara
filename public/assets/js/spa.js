@@ -53,7 +53,7 @@ function ajaxRequest({
         if (redirect_type !== "reload" && !redirect) return;
 
         const redirectActions = {
-            reload: () => window.location.reload(),
+            reload: () => location.reload(),
             spa: () => {
                 loadPage(redirect);
                 history.pushState(null, null, redirect);
@@ -80,15 +80,19 @@ function ajaxRequest({
             },
             success: (res) => {
                 if (typeof onSuccess === "function") {
-                    return onSuccess(res);
+                    onSuccess(res);
+                    return;
                 }
 
+                const isSuccess = res.status === "success";
+
                 if (res.message) {
-                    showToast(
-                        res.status,
-                        res.message,
-                        res.status === "success" ? 3000 : 5000
-                    );
+                    showToast(res.status, res.message, isSuccess ? 3000 : 5000);
+                }
+
+                if (isSuccess) {
+                    setTimeout(() => handleRedirect(res), 3000);
+                    return;
                 }
 
                 handleRedirect(res);
