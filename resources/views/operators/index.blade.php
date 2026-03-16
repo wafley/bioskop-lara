@@ -123,10 +123,10 @@
                 order: [
                     [0, "desc"]
                 ],
-                pageLength: 5,
+                pageLength: 15,
                 lengthMenu: [
-                    [5, 15, 30, 50, 75, 100],
-                    [5, 15, 30, 50, 75, 100]
+                    [15, 30, 50, 75, 100],
+                    [15, 30, 50, 75, 100]
                 ],
                 language: {
                     url: "{{ asset('templates/js/i18n/id.json') }}"
