@@ -29,6 +29,18 @@ class StudioService
     }
 
     /**
+     * Deleting studio data.
+     */
+    public function deleteStudio(Studio $studio): bool
+    {
+        try {
+            return (bool) $studio->delete();
+        } catch (\Exception) {
+            return false;
+        }
+    }
+
+    /**
      * Helper method to generate chair array and insert into database.
      */
     private function generateSeatsForStudio(Studio $studio, bool $generateVip): void

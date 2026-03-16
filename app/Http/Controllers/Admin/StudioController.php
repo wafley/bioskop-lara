@@ -140,6 +140,17 @@ class StudioController extends Controller
      */
     public function destroy(Studio $studio)
     {
-        //
+        if ($this->studioService->deleteStudio($studio)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Studio berhasil dihapus!',
+                'redirect_type' => 'reload',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Gagal menghapus data.'
+        ], 500);
     }
 }
