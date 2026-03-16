@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Studio;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Services\StudioService;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class StudioController extends Controller
 {
+    protected StudioService $studioService;
+
+    public function __construct(StudioService $studioService)
+    {
+        $this->studioService = $studioService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -58,7 +66,27 @@ class StudioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'rows' => 'required|integer|min:1',
+            'cols' => 'required|integer|min:1',
+        ]);
+
+        $generateVip = $request->has('generate_vip');
+
+        if ($this->studioService->createStudio($validated, $generateVip)) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Studio berhasil ditambahkan!',
+                'redirect' => route('studios.index'),
+                'redirect_type' => 'spa',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan saat menyimpan data.'
+        ], 500);
     }
 
     /**
