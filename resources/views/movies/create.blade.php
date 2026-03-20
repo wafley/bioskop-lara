@@ -65,7 +65,7 @@
 
                         <div class="mb-3">
                             <label for="cast" class="form-label">Pemeran</label>
-                            <input type="text" name="cast[]" id="cast" class="form-control" placeholder="Masukkan pemeran film">
+                            <input type="text" name="cast[]" id="cast" class="form-control">
                         </div>
 
                         <div class="mb-3">
@@ -135,6 +135,8 @@
                 new Choices(genreSelect, {
                     removeItemButton: true,
                     searchEnabled: true,
+                    placeholder: true,
+                    placeholderValue: 'Pilih Genre Film',
                     position: "bottom",
                 });
             }
@@ -147,6 +149,8 @@
                     delimiter: ',',
                     editItems: true,
                     duplicateItemsAllowed: false,
+                    placeholder: true,
+                    placeholderValue: 'Tambah pemeran...',
                 });
             }
         });
