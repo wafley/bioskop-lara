@@ -7,7 +7,16 @@
 
 @section('content')
     <div class="row">
-        <div class="col">
+        <div class="col-lg-3">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <img src="{{ $movie->poster }}" alt="{{ $movie->title }}" class="img-fluid rounded border">
+                    <p class="text-muted mb-0 mt-3">Dirilis pada {{ $movie->release_date }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="d-flex align-items-center justify-content-between w-100">
@@ -29,47 +38,39 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-2">
-                            <img src="{{ $movie->poster }}" alt="{{ $movie->title }}" class="img-fluid rounded border">
-                        </div>
-                        <div class="col-lg-10">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h3 class="text-uppercase fw-bold text-primary">
-                                    {{ $movie->title }}
-                                </h3>
-                                <p class="text-muted">Dirilis pada {{ $movie->release_date }}</p>
-                            </div>
+                        <h3 class="text-uppercase fw-bold text-primary">
+                            {{ $movie->title }}
+                        </h3>
 
-                            <p>
-                                <strong>Durasi:</strong>
-                                <span class="fst-italic fs-underline">{{ $movie->duration }}</span>
-                            </p>
+                        <p>
+                            <strong>Durasi:</strong>
+                            <span class="fst-italic fs-underline">{{ $movie->duration }}</span>
+                        </p>
 
-                            <p>{{ $movie->description }}</p>
+                        <p>{{ $movie->description }}</p>
 
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <strong>Sutradara:</strong>
-                                    <span class="fst-italic">{{ $movie->director }}</span>
-                                </li>
-                                <li class="list-group-item">
-                                    <strong>Genre:</strong>
-                                    @foreach ($movie->genre as $genre)
-                                        <span class='badge text-bg-primary'>{{ $genre }}</span>
-                                    @endforeach
-                                </li>
-                                <li class="list-group-item">
-                                    <strong>Pemeran:</strong>
-                                    @foreach ($movie->cast as $cast)
-                                        <span class='badge text-bg-primary'>{{ $cast }}</span>
-                                    @endforeach
-                                </li>
-                                <li class="list-group-item">
-                                    <strong>Status:</strong>
-                                    <span class='badge text-bg-{{ $movie->status_color }}'>{{ $movie->status_label }}</span>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Sutradara:</strong>
+                                <span class="fst-italic">{{ $movie->director }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Genre:</strong>
+                                @foreach ($movie->genre as $genre)
+                                    <span class='badge text-bg-primary'>{{ $genre }}</span>
+                                @endforeach
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Pemeran:</strong>
+                                @foreach ($movie->cast as $cast)
+                                    <span class='badge text-bg-primary'>{{ $cast }}</span>
+                                @endforeach
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Status:</strong>
+                                <span class='badge text-bg-{{ $movie->status_color }}'>{{ $movie->status_label }}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
