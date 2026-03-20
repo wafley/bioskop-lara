@@ -16,9 +16,11 @@
                     </small>
                 </div>
                 <div class="card-body pb-0">
-                    <h3 class="mb-0 fw-bold mark d-inline">{{ $operator->name }}</h3>
-
                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Nama:</strong>
+                            <span class="float-end mark">{{ $operator->name }}</span>
+                        </li>
                         <li class="list-group-item">
                             <strong>Username:</strong>
                             <span class="float-end font-monospace">{{ $operator->username }}</span>
