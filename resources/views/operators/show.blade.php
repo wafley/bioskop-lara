@@ -40,7 +40,7 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <div class="d-flex align-items-center justify-content-end gap-2">
+                    <div class="d-flex align-items-center justify-content-end gap-3">
                         <a href="{{ route('operators.edit', $operator->username) }}" class="btn btn-info spa-link">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>

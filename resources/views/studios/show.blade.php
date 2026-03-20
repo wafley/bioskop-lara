@@ -25,7 +25,7 @@
                                 Terakhir diperbarui {{ formatDate($studio->updated_at) }}
                             </small>
                         </div>
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-3">
                             <a href="{{ route('studios.edit', $studio->slug) }}" class="btn btn-info spa-link">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
