@@ -49,7 +49,7 @@
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="{{ url('/') }}">{{ config('app.name') }}</a>
+        <a href="javascript:void(0);">{{ config('app.name') }}</a>
     </li>
 
     @foreach ($breadcrumb as $item)
