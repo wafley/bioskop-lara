@@ -29,22 +29,7 @@
 
     <style>
         .page {
-            background-color: var(--default-body-bg-color);
-            background-image: linear-gradient(45deg,
-                    rgba(var(--dark-rgb), 0.05) 25%,
-                    transparent 25%),
-                linear-gradient(-45deg,
-                    rgba(var(--dark-rgb), 0.05) 25%,
-                    transparent 25%),
-                linear-gradient(45deg,
-                    transparent 75%,
-                    rgba(var(--dark-rgb), 0.05) 75%),
-                linear-gradient(-45deg,
-                    transparent 75%,
-                    rgba(var(--dark-rgb), 0.05) 75%);
-            background-size: 20px 20px;
-            justify-content: start;
-            transition: background-color 0.3s ease, background-image 0.3s ease;
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><rect width='20' height='20' fill='none' stroke='rgba(0,0,0,0.05)' stroke-width='1'/></svg>");
         }
     </style>
 
