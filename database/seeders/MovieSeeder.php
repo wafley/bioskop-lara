@@ -81,7 +81,10 @@ class MovieSeeder extends Seeder
             ],
         ];
 
+        $statuses = ['coming_soon', 'now_showing', 'ended'];
+
         foreach ($movies as $movie) {
+            $movie['status'] = $statuses[array_rand($statuses)];
             Movie::create($movie);
         }
     }
