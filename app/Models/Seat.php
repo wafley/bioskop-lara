@@ -19,6 +19,10 @@ class Seat extends Model
         return 'C';
     }
 
+    /**
+     * Relations
+     */
+
     public function studio()
     {
         return $this->belongsTo(Studio::class);

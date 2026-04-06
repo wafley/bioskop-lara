@@ -38,6 +38,10 @@ class Studio extends Model
         );
     }
 
+    /**
+     * Relations
+     */
+
     public function seats()
     {
         return $this->hasMany(Seat::class);

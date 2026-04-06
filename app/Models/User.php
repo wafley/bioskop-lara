@@ -48,6 +48,10 @@ class User extends Authenticatable
         return Attribute::get(fn($value, $attributes) => $attributes['status'] ? 'Aktif' : 'Tidak Aktif');
     }
 
+    /**
+     * Relations
+     */
+
     public function activities()
     {
         return $this->hasMany(Activity::class, 'causer_id')
