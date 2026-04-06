@@ -156,4 +156,13 @@ class Movie extends Model
             };
         });
     }
+
+    /**
+     * Relations
+     */
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
