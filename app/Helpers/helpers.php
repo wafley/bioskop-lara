@@ -26,6 +26,17 @@ if (!function_exists('spaRender')) {
     }
 }
 
+if (!function_exists('formatPrice')) {
+    function formatPrice($price): string
+    {
+        if ($price == 0) {
+            return 'Rp 0';
+        }
+
+        return 'Rp ' . number_format($price, 0, ',', '.');
+    }
+}
+
 if (!function_exists('formatDate')) {
     function formatDate($date, $withTime = true)
     {
