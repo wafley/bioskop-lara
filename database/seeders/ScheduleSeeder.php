@@ -13,8 +13,8 @@ class ScheduleSeeder extends Seeder
 {
     public function run(): void
     {
-        $movies = Movie::all();
-        $studios = Studio::all();
+        $movies = Movie::where('status', 'now_showing')->get();
+        $studios = Studio::where('status', true)->get();
 
         if ($movies->isEmpty() || $studios->isEmpty()) return;
 
