@@ -69,6 +69,17 @@
                         </a>
                     </li>
                     <!-- End::slide -->
+
+                    <!-- Start::slide -->
+                    <li class="slide">
+                        <a href="{{ route('schedules.index') }}" class="side-menu__item {{ isActive('schedules.*') }} spa-link">
+                            <span class="side-menu__icon">
+                                <i class='fe fe-calendar'></i>
+                            </span>
+                            <span class="side-menu__label">Schedules</span>
+                        </a>
+                    </li>
+                    <!-- End::slide -->
                 @endrole
             </ul>
 
