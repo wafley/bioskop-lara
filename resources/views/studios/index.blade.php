@@ -12,14 +12,22 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col d-flex align-items-center gap-3">
-                            <div>
-                                <label for="filter-status" class="form-label">Filter Status</label>
-                                <select id="filter-status" class="form-select">
-                                    <option value="">Semua Status</option>
-                                    <option value="1">Open</option>
-                                    <option value="0">Closed</option>
-                                </select>
-                            </div>
+                            <form method="GET" class="mb-3 d-flex gap-3">
+                                <div>
+                                    <label class="form-label">Filter Status</label>
+                                    <select name="status" class="form-select" onchange="this.form.submit()">
+                                        <option value="">Semua Status</option>
+                                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Open</option>
+                                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Closed</option>
+                                    </select>
+                                </div>
+
+                                <div class="align-self-end">
+                                    <a href="{{ route('studios.index') }}" class="btn btn-secondary spa-link">
+                                        Reset
+                                    </a>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -28,127 +36,47 @@
                                 <i class="me-2 ti ti-user-plus"></i>
                                 Tambah
                             </a>
-                            <button type="button" id="refresh-btn" class="btn btn-success">
+                            <a href="{{ route('studios.index') }}" class="btn btn-success spa-link">
                                 <i class="me-2 ti ti-rotate"></i>
                                 Refresh
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            <div class="table-responsive">
-                                <div id="table-loader" class="text-center" style="display:none;">
-                                    <div class="spinner-border text-primary d-block mx-auto" aria-hidden="true"></div>
-                                    <span role="status">Sedang memproses...</span>
+                        @forelse ($studios as $studio)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card custom-card shadow-sm border">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1">{{ $studio->name }}</h5>
+                                            <small class="text-muted">
+                                                Kapasitas: {{ $studio->capacity }}
+                                            </small>
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge text-bg-{{ $studio->status_color }}">
+                                                {{ $studio->status_label }}
+                                            </span>
+
+                                            <a href="{{ route('studios.show', $studio->slug) }}"
+                                                class="btn btn-sm btn-outline-secondary spa-link">
+                                                Detail <i class='bi bi-arrow-right'></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <table id="studios-table" class="table mb-0 table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Studio</th>
-                                            <th>Kapasitas</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                </table>
                             </div>
-                        </div>
+                        @empty
+                            <div class="col">
+                                <div class="text-center text-muted py-5">
+                                    Data studio tidak tersedia
+                                </div>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('templates/libs/datatables/datatables.min.js') }}" data-partial="1"></script>
-    <script data-partial="1">
-        window.studiosTable = window.studiosTable || null;
-
-        function initStudiosTable() {
-            if ($.fn.DataTable.isDataTable("#studios-table")) {
-                $("#studios-table").DataTable().destroy();
-            }
-
-            window.studiosTable = $("#studios-table").DataTable({
-                processing: false,
-                serverSide: true,
-                autoWidth: false,
-                ajax: {
-                    url: "{{ route('studios.data') }}",
-                    data: function(d) {
-                        d.status = $("#filter-status").val();
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 401 || xhr.status === 419) {
-                            showToast("error", "Sesi login habis, silakan login ulang!");
-                            window.location.href = window.routes.login;
-                        }
-                    }
-                },
-                columns: [{
-                        data: "DT_RowIndex",
-                        name: "DT_RowIndex",
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: "name",
-                        name: "name"
-                    },
-                    {
-                        data: "capacity",
-                        name: "capacity"
-                    },
-                    {
-                        data: "status",
-                        name: "status",
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: "action",
-                        name: "action",
-                        orderable: false,
-                        searchable: false,
-                        width: 180
-                    },
-                ],
-                order: [
-                    [0, 'desc']
-                ],
-                pageLength: 15,
-                lengthMenu: [
-                    [15, 30, 50, 75, 100],
-                    [15, 30, 50, 75, 100]
-                ],
-                language: {
-                    url: "{{ asset('templates/js/i18n/id.json') }}"
-                }
-            });
-        }
-
-        initStudiosTable();
-
-        // Table loader animation
-        window.studiosTable.on('processing.dt', function(e, settings, processing) {
-            if (processing) {
-                $('#table-loader').show();
-            } else {
-                $('#table-loader').hide();
-            }
-        });
-
-        // Refresh table
-        $("#refresh-btn").on("click", function() {
-            console.log('Clicked');
-            window.studiosTable.ajax.reload();
-        });
-
-        // Filter status
-        $("#filter-status").on("change", function() {
-            window.studiosTable.ajax.reload();
-        });
-    </script>
 @endsection

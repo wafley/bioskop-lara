@@ -6,7 +6,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\StudioController;
 use App\Http\Controllers\Admin\OperatorController;
-use App\Http\Controllers\Admin\SeatsController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -41,7 +40,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('movies', MovieController::class);
 
         // Studios Route
-        Route::get('/studios/data', [StudioController::class, 'data'])->name('studios.data');
         Route::resource('studios', StudioController::class);
         Route::post('/studios/render-seats', [StudioController::class, 'renderSeats'])->name('studios.render');
         Route::post('/studios/{studio}/add-vip', [StudioController::class, 'addVip'])->name('studios.add-vip');

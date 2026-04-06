@@ -22,35 +22,17 @@ class StudioController extends Controller
      */
     public function index(Request $request)
     {
-        return spaRender($request, 'studios.index');
-    }
+        $query = Studio::query()->latest('updated_at');
 
-    public function data(Request $request)
-    {
-        $studios = Studio::orderBy('updated_at', 'desc');
-
-        if ($request->status !== null && $request->status !== '') {
-            $studios->where('status', $request->status);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
 
-        return DataTables::of($studios)
-            ->addIndexColumn()
-            ->editColumn('status', function ($row) {
-                return "<span class='badge text-bg-{$row->status_color}'>{$row->status_label}</span>";
-            })
-            ->addColumn('action', function ($row) {
-                $detailUrl = route('studios.show', $row->slug);
-                $editUrl = route('studios.edit', $row->slug);
-                $deleteUrl = route('studios.destroy', $row->slug);
+        $studios = $query->paginate(15)->withQueryString();
 
-                return "
-                    <a href='{$detailUrl}' class='btn btn-sm btn-primary spa-link'>Detail <i class='bi bi-arrow-right'></i></a>
-                    <a href='{$editUrl}' class='btn btn-sm btn-info spa-link'><i class='bi bi-pencil-square'></i></a>
-                    <button class='btn btn-sm btn-danger' data-ajax='delete' data-url='{$deleteUrl}'><i class='bi bi-trash'></i></button>
-                ";
-            })
-            ->rawColumns(['status', 'action'])
-            ->make();
+        return spaRender($request, 'studios.index', [
+            'studios' => $studios
+        ]);
     }
 
     /**
