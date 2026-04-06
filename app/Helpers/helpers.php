@@ -60,6 +60,13 @@ if (!function_exists('formatDate')) {
     }
 }
 
+if (!function_exists('generateUniqueId')) {
+    function generateUniqueId()
+    {
+        return Str::uuid();
+    }
+}
+
 if (!function_exists('generateSlug')) {
     function generateSlug($model, string $value)
     {
