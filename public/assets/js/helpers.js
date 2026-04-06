@@ -30,3 +30,8 @@ function showToast(icon, message, timer = 3000) {
         background: isDark ? "rgb(43, 48, 84)" : "#fff",
     });
 }
+
+// Input Price handler
+$("#price").on("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+});
