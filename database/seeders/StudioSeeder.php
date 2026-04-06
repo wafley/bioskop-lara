@@ -10,7 +10,7 @@ class StudioSeeder extends Seeder
 {
     public function run(): void
     {
-        $studios = Studio::factory()->count(17)->create();
+        $studios = Studio::factory()->count(8)->create();
 
         foreach ($studios as $studio) {
             $rows = $studio->rows;

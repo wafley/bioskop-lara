@@ -16,14 +16,10 @@ class StudioFactory extends Factory
      */
     public function definition(): array
     {
-        static $index = 1;
-
         $rows = $this->faker->numberBetween(7, 9);
         $cols = $this->faker->numberBetween($rows + 1, 16);
 
-        $name = "Studio {$index}";
-
-        $index++;
+        $name = 'Room ' . ucfirst($this->faker->word());
 
         return [
             'name' => $name,
