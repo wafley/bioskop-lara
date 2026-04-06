@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MovieSeeder::class,
             StudioSeeder::class,
+            ScheduleSeeder::class,
         ]);
     }
 }
