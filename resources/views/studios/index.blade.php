@@ -33,7 +33,7 @@
                     <div class="row mb-3">
                         <div class="col d-flex align-items-center gap-3">
                             <a href="{{ route('studios.create') }}" class="btn btn-primary spa-link">
-                                <i class="me-2 ti ti-user-plus"></i>
+                                <i class="me-2 bi bi-plus"></i>
                                 Tambah
                             </a>
                             <a href="{{ route('studios.index') }}" class="btn btn-success spa-link">
@@ -59,8 +59,7 @@
                                                 {{ $studio->status_label }}
                                             </span>
 
-                                            <a href="{{ route('studios.show', $studio->slug) }}"
-                                                class="btn btn-sm btn-outline-secondary spa-link">
+                                            <a href="{{ route('studios.show', $studio->slug) }}" class="btn btn-sm btn-outline-secondary spa-link">
                                                 Detail <i class='bi bi-arrow-right'></i>
                                             </a>
                                         </div>

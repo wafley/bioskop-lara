@@ -26,7 +26,7 @@
                     <div class="row mb-3">
                         <div class="col d-flex align-items-center gap-3">
                             <a href="{{ route('movies.create') }}" class="btn btn-primary spa-link">
-                                <i class="me-2 ti ti-user-plus"></i>
+                                <i class="me-2 bi bi-plus"></i>
                                 Tambah
                             </a>
                             <button type="button" id="refresh-btn" class="btn btn-success">
