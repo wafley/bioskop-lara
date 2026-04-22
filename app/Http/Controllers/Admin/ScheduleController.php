@@ -89,8 +89,11 @@ class ScheduleController extends Controller
      */
     public function show(Request $request, Schedule $schedule)
     {
+        $schedule = $schedule->load(['movie', 'studio.seats']);
+        $seats = $schedule->studio->seats->groupBy('row');
         $data = [
-            'schedule' => $schedule->load(['movie', 'studio']),
+            'schedule' => $schedule,
+            'seats'    => $seats,
         ];
 
         return spaRender($request, 'schedules.show', $data);
