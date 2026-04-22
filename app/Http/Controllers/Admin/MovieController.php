@@ -35,7 +35,7 @@ class MovieController extends Controller
                 return $row->duration ?? '-';
             })
             ->editColumn('genre', function ($row) {
-                return implode(', ', $row->genre ?? []);
+                return "<i class='bi bi-tags me-1'></i>" . implode(', ', $row->genre ?? []);
             })
             ->editColumn('cast', function ($row) {
                 return implode(', ', $row->cast ?? []);
@@ -54,7 +54,7 @@ class MovieController extends Controller
                     <button class='btn btn-sm btn-danger' data-ajax='delete' data-url='{$deleteUrl}'><i class='bi bi-trash'></i></button>
                 ";
             })
-            ->rawColumns(['poster', 'status', 'action'])
+            ->rawColumns(['poster', 'genre', 'status', 'action'])
             ->make();
     }
 
