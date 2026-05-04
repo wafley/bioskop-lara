@@ -28,7 +28,7 @@ class OperatorController extends Controller
 
     public function data(Request $request)
     {
-        $operators = User::with('role')->where('role_id', $this->role->id)->orderBy('updated_at', 'desc');
+        $operators = User::with('role')->where('role_id', $this->role->id)->orderByRaw('status = 1 DESC')->orderBy('updated_at', 'desc');
 
         if ($request->status !== null && $request->status !== '') {
             $operators->where('status', $request->status);
