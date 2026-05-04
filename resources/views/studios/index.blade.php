@@ -11,23 +11,13 @@
             <div class="card custom-card">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col d-flex align-items-center gap-3">
-                            <form method="GET" class="mb-3 d-flex gap-3">
-                                <div>
-                                    <label class="form-label">Filter Status</label>
-                                    <select name="status" class="form-select" onchange="this.form.submit()">
-                                        <option value="">Semua Status</option>
-                                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Open</option>
-                                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Closed</option>
-                                    </select>
-                                </div>
-
-                                <div class="align-self-end">
-                                    <a href="{{ route('studios.index') }}" class="btn btn-secondary spa-link">
-                                        Reset
-                                    </a>
-                                </div>
-                            </form>
+                        <div class="col">
+                            <label class="form-label">Filter Status</label>
+                            <select class="form-select w-auto" onchange="filterStatus(this.value)">
+                                <option value="">Semua Status</option>
+                                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Open</option>
+                                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Closed</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -78,4 +68,20 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script data-partial="1">
+        function filterStatus(status) {
+            let url = new URL(window.location.href);
+
+            if (status) {
+                url.searchParams.set('status', status);
+            } else {
+                url.searchParams.delete('status');
+            }
+
+            window.location.href = url.toString();
+        }
+    </script>
 @endsection
