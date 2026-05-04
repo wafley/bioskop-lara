@@ -139,7 +139,7 @@ class Movie extends Model
             return match ($attributes['status']) {
                 'coming_soon' => 'warning',
                 'now_showing' => 'success',
-                'ended'       => 'secondary',
+                'ended'       => 'danger',
                 default       => 'dark',
             };
         });
@@ -150,8 +150,8 @@ class Movie extends Model
         return Attribute::get(function ($value, $attributes) {
             return match ($attributes['status']) {
                 'coming_soon' => 'Segera Tayang',
-                'now_showing' => 'Tersedia',
-                'ended'       => 'Selesai',
+                'now_showing' => 'Sedang Tayang',
+                'ended'       => 'Berakhir',
                 default       => 'Tidak Diketahui',
             };
         });
