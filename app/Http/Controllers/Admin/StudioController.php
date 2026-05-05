@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Studio;
 use Illuminate\Http\Request;
 use App\Services\StudioService;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 
 class StudioController extends Controller
