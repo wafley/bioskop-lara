@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col">
             <div class="card custom-card">
-                <div class="card-body">
+                <div class="card-body pb-0">
                     <div class="row mb-3">
                         <div class="col">
                             <label class="form-label">Filter Status</label>
@@ -64,6 +64,8 @@
                             </div>
                         @endforelse
                     </div>
+
+                    {{ $studios->links() }}
                 </div>
             </div>
         </div>

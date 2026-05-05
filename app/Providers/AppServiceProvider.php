@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Observers\ActivityObserver;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -36,5 +37,7 @@ class AppServiceProvider extends ServiceProvider
 
             return in_array(trim(Auth::user()->role->name), array_map('trim', $roles));
         });
+
+        Paginator::useBootstrapFive();
     }
 }
