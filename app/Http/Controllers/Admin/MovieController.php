@@ -15,47 +15,17 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
-        return spaRender($request, 'movies.index');
-    }
+        $query = Movie::query()->latest('updated_at');
 
-    public function data(Request $request)
-    {
-        $movies = Movie::orderBy('updated_at', 'desc');
-
-        if ($request->status !== null && $request->status !== '') {
-            $movies->where('status', $request->status);
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
 
-        return DataTables::of($movies)
-            ->addIndexColumn()
-            ->editColumn('poster', function ($row) {
-                return "<img src='{$row->poster}' alt='{$row->title} Poster' class='img-thumbnail' width='80'>";
-            })
-            ->editColumn('duration', function ($row) {
-                return $row->duration ?? '-';
-            })
-            ->editColumn('genre', function ($row) {
-                return "<i class='bi bi-tags me-1'></i>" . implode(', ', $row->genre ?? []);
-            })
-            ->editColumn('cast', function ($row) {
-                return implode(', ', $row->cast ?? []);
-            })
-            ->editColumn('status', function ($row) {
-                return "<span class='badge text-bg-{$row->status_color}'>{$row->status_label}</span>";
-            })
-            ->addColumn('action', function ($row) {
-                $detailUrl = route('movies.show', $row->slug);
-                $editUrl = route('movies.edit', $row->slug);
-                $deleteUrl = route('movies.destroy', $row->slug);
+        $movies = $query->paginate(15)->withQueryString();
 
-                return "
-                    <a href='{$detailUrl}' class='btn btn-sm btn-primary spa-link'>Detail <i class='bi bi-arrow-right'></i></a>
-                    <a href='{$editUrl}' class='btn btn-sm btn-info spa-link'><i class='bi bi-pencil-square'></i></a>
-                    <button class='btn btn-sm btn-danger' data-ajax='delete' data-url='{$deleteUrl}'><i class='bi bi-trash'></i></button>
-                ";
-            })
-            ->rawColumns(['poster', 'genre', 'status', 'action'])
-            ->make();
+        return spaRender($request, 'movies.index', [
+            'movies' => $movies
+        ]);
     }
 
     /**

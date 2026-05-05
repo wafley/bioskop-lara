@@ -37,7 +37,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('operators', OperatorController::class);
 
         // Movies Route
-        Route::get('/movies/data', [MovieController::class, 'data'])->name('movies.data');
         Route::resource('movies', MovieController::class);
 
         // Studios Route
