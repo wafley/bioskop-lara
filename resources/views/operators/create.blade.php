@@ -21,15 +21,13 @@
 
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" name="username" id="username" class="form-control"
-                                placeholder="Masukkan username untuk operator">
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Masukkan username untuk operator">
                         </div>
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Masukkan password untuk operator">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password untuk operator">
                                 <button class="btn btn-light" type="button" onclick="togglePassword('password', this)">
                                     <i class='fa fa-eye'></i>
                                 </button>
@@ -39,8 +37,7 @@
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                                    placeholder="Konfirmasi password">
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi password untuk operator">
                                 <button class="btn btn-light" type="button" onclick="togglePassword('password_confirmation', this)">
                                     <i class='fa fa-eye'></i>
                                 </button>
