@@ -2,89 +2,107 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\Movie;
 use App\Models\Studio;
 use App\Models\Schedule;
-use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class ScheduleSeeder extends Seeder
 {
+    protected $cleaningBuffer = 20;
+
     public function run(): void
     {
+        $studios = Studio::where('status', 1)->get();
         $movies = Movie::where('status', 'now_showing')->get();
-        $studios = Studio::where('status', true)->get();
 
-        if ($movies->isEmpty() || $studios->isEmpty()) return;
+        if ($movies->isEmpty()) {
+            $this->command->warn("Tidak ada film 'now_showing'. Skipping Seeder.");
+            return;
+        }
 
-        $dates = [
-            now()->format('Y-m-d'),
-            now()->addDay()->format('Y-m-d'),
-            now()->addDays(2)->format('Y-m-d')
-        ];
+        $moviePool = collect();
+        $featuredMovies = $movies->count() > 1 ? $movies->random(2) : $movies;
 
-        $schedulesData = [];
-
-        foreach ($dates as $date) {
-            $carbonDate = Carbon::parse($date);
-
-            if ($carbonDate->isWeekend()) {
-                $priceBase = 65000;
-            } elseif ($carbonDate->isFriday()) {
-                $priceBase = 50000;
-            } else {
-                $priceBase = 40000;
+        foreach ($movies as $movie) {
+            $weight = $featuredMovies->contains('id', $movie->id) ? 3 : 1;
+            for ($i = 0; $i < $weight; $i++) {
+                $moviePool->push($movie);
             }
+        }
+
+        for ($day = 0; $day < 7; $day++) {
+            $showDate = Carbon::today()->addDays($day);
+            $dateString = $showDate->format('Y-m-d');
+
+            $dailyQueue = $moviePool->shuffle();
+            $movieIndex = 0;
+            $totalInQueue = $dailyQueue->count();
 
             foreach ($studios as $studio) {
-                $studioMovies = $movies->random(min(2, $movies->count()));
+                $currentTime = $showDate->copy()->setTime(10, 0, 0);
+                $closingTime = $showDate->copy()->setTime(23, 59, 0);
 
-                $currentMinutes = 10 * 60;
-                $endDayMinutes = 23 * 60;
-                $movieIndex = 0;
+                $attempts = 0;
+                $maxAttempts = $totalInQueue;
 
-                $price = (in_array($studio->name, ['VIP', 'Premiere', 'IMAX']))
-                    ? $priceBase + 35000
-                    : $priceBase;
+                while ($currentTime->lt($closingTime) && $attempts < $maxAttempts) {
+                    $movie = $dailyQueue[$movieIndex % $totalInQueue];
+                    $duration = max(60, $this->parseDurationToMinutes($movie->duration));
 
-                while ($currentMinutes < $endDayMinutes) {
-                    $movie = $studioMovies[$movieIndex % $studioMovies->count()];
-                    $duration = max(60, $this->parseDurationToMinutes($movie->getRawOriginal('duration')));
+                    $startTime = $currentTime->copy();
+                    $endTime = $startTime->copy()->addMinutes($duration);
 
-                    $startHour = floor($currentMinutes / 60);
-                    $startMin = $currentMinutes % 60;
+                    if ($endTime->gt($closingTime)) {
+                        break;
+                    }
 
-                    $endMinutes = $currentMinutes + $duration;
+                    $isMovieBusy = Schedule::where('movie_id', $movie->id)
+                        ->where('show_date', $dateString)
+                        ->where(function ($q) use ($startTime, $endTime) {
+                            $q->where('start_time', '<', $endTime->format('H:i:s'))
+                                ->where('end_time', '>', $startTime->format('H:i:s'));
+                        })
+                        ->exists();
 
-                    if ($endMinutes > ($endDayMinutes + 60)) break;
+                    if ($isMovieBusy) {
+                        $movieIndex++;
+                        $attempts++;
+                        continue;
+                    }
 
-                    $endHour = floor($endMinutes / 60);
-                    $endMin = $endMinutes % 60;
+                    $attempts = 0;
 
-                    $schedulesData[] = [
-                        'uuid'       => Str::uuid(),
-                        'movie_id'   => $movie->id,
-                        'studio_id'  => $studio->id,
-                        'show_date'  => $date,
-                        'start_time' => sprintf('%02d:%02d:00', $startHour, $startMin),
-                        'end_time'   => sprintf('%02d:%02d:00', $endHour, $endMin),
-                        'price'      => $price,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                    $priceBase = match (true) {
+                        $showDate->isFriday() => 50000,
+                        $showDate->isWeekend() => 65000,
+                        default => 40000,
+                    };
 
-                    $nextStart = $endMinutes + rand(20, 30);
+                    $finalPrice = (in_array($studio->name, ['VIP', 'Premiere', 'IMAX']))
+                        ? $priceBase + 35000
+                        : $priceBase;
 
-                    $currentMinutes = ceil($nextStart / 15) * 15;
+                    Schedule::create([
+                        'uuid' => Str::uuid(),
+                        'movie_id' => $movie->id,
+                        'studio_id' => $studio->id,
+                        'show_date' => $dateString,
+                        'start_time' => $startTime->format('H:i:s'),
+                        'end_time' => $endTime->format('H:i:s'),
+                        'price' => $finalPrice,
+                    ]);
+
+                    $nextPossibleStartMinutes = ($endTime->hour * 60) + $endTime->minute + $this->cleaningBuffer;
+                    $roundedMinutes = ceil($nextPossibleStartMinutes / 15) * 15;
+
+                    $currentTime = $showDate->copy()->startOfDay()->addMinutes($roundedMinutes);
 
                     $movieIndex++;
                 }
             }
-        }
-
-        foreach (array_chunk($schedulesData, 100) as $chunk) {
-            Schedule::insert($chunk);
         }
     }
 
