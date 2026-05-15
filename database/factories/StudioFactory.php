@@ -26,7 +26,7 @@ class StudioFactory extends Factory
             'rows'     => $rows,
             'cols'     => $cols,
             'capacity' => $rows * $cols,
-            'status' => $this->faker->boolean(),
+            'status' => $this->faker->boolean(70),
         ];
     }
 
