@@ -47,11 +47,9 @@
                                     <th class="text-muted fw-bold">Status</th>
                                     <td class="font-monospace">
                                         :
-                                        @if ($operator->is_active)
-                                            <span class="badge bg-success">Aktif</span>
-                                        @else
-                                            <span class="badge bg-danger">Nonaktif</span>
-                                        @endif
+                                        <span class="badge text-bg-{{ $operator->status_color }}">
+                                            {{ $operator->status_label }}
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
