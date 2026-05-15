@@ -54,14 +54,11 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="price" class="form-label">Harga Tiket</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    Rp.
-                                </span>
-                                <input type="text" class="form-control" id="price" name="price" readonly>
+                            <label class="form-label text-muted">Estimasi Harga Tiket</label>
+                            <div class="d-flex align-items-center">
+                                <h4 class="fw-bold text-primary mb-0" id="price_display">Rp. 0</h4>
                             </div>
-                            <span class="form-text text-muted">Harga tiket akan otomatis diisi sesuai dengan hari penayangan.</span>
+                            <span class="form-text text-muted">Harga ditentukan otomatis berdasarkan hari dan tipe studio.</span>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -129,24 +126,40 @@
     </script>
 
     <script data-partial="1">
-        const priceInput = document.getElementById('price');
         const showDateInput = document.getElementById('show_date');
+        const studioSelect = document.getElementById('studio'); // Tambahkan ini
+        const priceDisplay = document.getElementById('price_display');
 
         function setAutoPrice() {
             const dateVal = showDateInput.value;
+            const studioVal = studioSelect.options[studioSelect.selectedIndex]?.text || '';
+
             if (dateVal.length === 10) {
                 const parts = dateVal.split("-");
                 const date = new Date(parts[2], parts[1] - 1, parts[0]);
-                const day = date.getDay();
+                const day = date.getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
 
+                // 1. Logic Hari (Sesuai Service)
                 let price = 40000;
-                if (day === 6) price = 50000;
+                if (day === 5) price = 50000;
                 if (day === 0 || day === 6) price = 65000;
 
-                priceInput.value = price;
+                // 2. Tambahan Studio (Sesuai Service)
+                if (studioVal.includes('VIP') || studioVal.includes('Premiere') || studioVal.includes('IMAX')) {
+                    price += 35000;
+                }
+
+                // Update Tampilan (Format Rupiah)
+                priceDisplay.innerText = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    maximumFractionDigits: 0
+                }).format(price);
             }
         }
 
+        // Jalankan saat tanggal diisi atau studio dipilih
         $(showDateInput).on('input', setAutoPrice);
+        $(studioSelect).on('change', setAutoPrice);
     </script>
 @endsection

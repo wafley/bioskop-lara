@@ -64,7 +64,6 @@ class ScheduleController extends Controller
             'movie_id'   => 'required|exists:movies,id',
             'studio_id'  => 'required|exists:studios,id',
             'start_time' => 'required|string',
-            'price'      => 'required|numeric',
         ]);
 
         try {
