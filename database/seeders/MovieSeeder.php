@@ -81,10 +81,22 @@ class MovieSeeder extends Seeder
             ],
         ];
 
-        $statuses = ['coming_soon', 'now_showing', 'ended'];
+        $totalMovies = count($movies);
 
-        foreach ($movies as $movie) {
-            $movie['status'] = $statuses[array_rand($statuses)];
+        $nowShowingCount = round($totalMovies * 0.6);
+        $comingSoonCount = round($totalMovies * 0.2);
+        $endedCount = $totalMovies - $nowShowingCount - $comingSoonCount;
+
+        $statuses = array_merge(
+            array_fill(0, $nowShowingCount, 'now_showing'),
+            array_fill(0, $comingSoonCount, 'coming_soon'),
+            array_fill(0, $endedCount, 'ended')
+        );
+
+        shuffle($statuses);
+
+        foreach ($movies as $index => $movie) {
+            $movie['status'] = $statuses[$index];
             Movie::create($movie);
         }
     }
