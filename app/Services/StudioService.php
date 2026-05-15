@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\DB;
 class StudioService
 {
     /**
-     * Save new studio data and its chairs.
+     * Creating new studio with seat generation in a transaction.
+     * @param array $data
+     * @param bool $generateVip
+     * @return bool
+     * @throws \Exception
      */
     public function createStudio(array $data, bool $generateVip): bool
     {
@@ -30,7 +34,11 @@ class StudioService
     }
 
     /**
-     * Updating studio data.
+     * Update existing studio details.
+     *
+     * @param Studio $studio
+     * @param array $data
+     * @return bool
      */
     public function updateStudio(Studio $studio, array $data): bool
     {
@@ -42,7 +50,10 @@ class StudioService
     }
 
     /**
-     * Deleting studio data.
+     * Delete a studio and its related seats.
+     *
+     * @param Studio $studio
+     * @return bool
      */
     public function deleteStudio(Studio $studio): bool
     {
@@ -54,7 +65,13 @@ class StudioService
     }
 
     /**
-     * Generates preview data for AJAX Rendering.
+     * Render a preview of the seat layout for a given studio configuration.
+     *
+     * @param int $rows
+     * @param int $cols
+     * @param bool $generateVip
+     * @return array
+     * @throws \Exception
      */
     public function renderSeatsPreview(int $rows, int $cols, bool $generateVip): array
     {
@@ -85,7 +102,11 @@ class StudioService
     }
 
     /**
-     * Changed the existing studio middle row to VIP in the Database.
+     * Generate VIP seats for an existing studio.
+     *
+     * @param Studio $studio
+     * @return bool
+     * @throws \Exception
      */
     public function generateVipSeats(Studio $studio): bool
     {
@@ -119,7 +140,12 @@ class StudioService
     }
 
     /**
-     * Helper method to generate chair array and insert into database.
+     * Generate seats for a studio based on its configuration.
+     *
+     * @param Studio $studio
+     * @param bool $generateVip
+     * @return void
+     * @throws \Exception
      */
     private function generateSeatsForStudio(Studio $studio, bool $generateVip): void
     {
