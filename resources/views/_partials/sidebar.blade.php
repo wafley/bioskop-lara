@@ -65,7 +65,7 @@
                             <span class="side-menu__icon">
                                 <i class='fe fe-airplay'></i>
                             </span>
-                            <span class="side-menu__label">Studios</span>
+                            <span class="side-menu__label">Studio</span>
                         </a>
                     </li>
                     <!-- End::slide -->
@@ -76,7 +76,7 @@
                             <span class="side-menu__icon">
                                 <i class='fe fe-calendar'></i>
                             </span>
-                            <span class="side-menu__label">Schedules</span>
+                            <span class="side-menu__label">Jadwal Tayang</span>
                         </a>
                     </li>
                     <!-- End::slide -->
