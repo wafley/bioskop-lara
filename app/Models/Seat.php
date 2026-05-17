@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Seat extends Model
 {
@@ -23,8 +25,13 @@ class Seat extends Model
      * Relations
      */
 
-    public function studio()
+    public function studio(): BelongsTo
     {
         return $this->belongsTo(Studio::class);
+    }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'seat_id');
     }
 }

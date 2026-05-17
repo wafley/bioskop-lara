@@ -7,8 +7,9 @@ use Spatie\Activitylog\Models\Activity;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -53,7 +54,7 @@ class User extends Authenticatable
      * Relations
      */
 
-    public function activities()
+    public function activities(): HasMany
     {
         return $this->hasMany(Activity::class, 'causer_id')
             ->where('causer_type', self::class);
@@ -62,5 +63,10 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
     }
 }
