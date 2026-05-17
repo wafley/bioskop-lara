@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', 'Schedule')
+@section('title', 'Schedules')
 
 @section('breadcrumb')
     @include('_partials.breadcrumb')
