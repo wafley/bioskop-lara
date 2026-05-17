@@ -6,17 +6,17 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class OperatorSeeder extends Seeder
+class CashierSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $role = Role::where('name', 'operator')->first();
+        $role = Role::where('name', 'cashier')->first();
 
         if (!$role) {
-            throw new \Exception('Role operator tidak ditemukan');
+            throw new \Exception('Role cashier tidak ditemukan');
         }
 
         $totalActive = 216;
@@ -30,8 +30,8 @@ class OperatorSeeder extends Seeder
 
         for ($i = 1; $i <= $total; $i++) {
             $data[] = [
-                'name' => 'Operator ' . $i,
-                'username' => 'operator' . $i,
+                'name' => 'Cashier ' . $i,
+                'username' => 'cashier' . $i,
                 'password' => $hashedPassword,
                 'role_id' => $role->id,
                 'status' => $i <= $totalActive,

@@ -39,11 +39,11 @@
                 @role('admin')
                     <!-- Start::slide -->
                     <li class="slide">
-                        <a href="{{ route('operators.index') }}" class="side-menu__item {{ isActive('operators.*') }} spa-link">
+                        <a href="{{ route('cashiers.index') }}" class="side-menu__item {{ isActive('cashiers.*') }} spa-link">
                             <span class="side-menu__icon">
                                 <i class='fe fe-users'></i>
                             </span>
-                            <span class="side-menu__label">Operators</span>
+                            <span class="side-menu__label">Data Kasir</span>
                         </a>
                     </li>
                     <!-- End::slide -->
@@ -54,7 +54,7 @@
                             <span class="side-menu__icon">
                                 <i class='fe fe-film'></i>
                             </span>
-                            <span class="side-menu__label">Movies</span>
+                            <span class="side-menu__label">Film</span>
                         </a>
                     </li>
                     <!-- End::slide -->

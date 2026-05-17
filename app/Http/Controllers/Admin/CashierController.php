@@ -9,13 +9,13 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class OperatorController extends Controller
+class CashierController extends Controller
 {
     protected Role $role;
 
     public function __construct()
     {
-        $this->role = Role::where('name', 'operator')->firstOrFail();
+        $this->role = Role::where('name', 'cashier')->firstOrFail();
     }
 
     /**
@@ -23,27 +23,27 @@ class OperatorController extends Controller
      */
     public function index(Request $request)
     {
-        return spaRender($request, 'operators.index');
+        return spaRender($request, 'cashiers.index');
     }
 
     public function data(Request $request)
     {
-        $operators = User::with('role')->where('role_id', $this->role->id)->orderByRaw('status = 1 DESC')->orderBy('updated_at', 'desc');
+        $cashiers = User::with('role')->where('role_id', $this->role->id)->orderByRaw('status = 1 DESC')->orderBy('updated_at', 'desc');
 
         if ($request->status !== null && $request->status !== '') {
-            $operators->where('status', $request->status);
+            $cashiers->where('status', $request->status);
         }
 
-        return DataTables::of($operators)
+        return DataTables::of($cashiers)
             ->addIndexColumn()
             ->editColumn('created_at', fn($row) => formatDate($row->created_at))
             ->editColumn('status', function ($row) {
                 return "<span class='badge text-bg-{$row->status_color}'>{$row->status_label}</span>";
             })
             ->addColumn('action', function ($row) {
-                $detailUrl = route('operators.show', $row->username);
-                $editUrl = route('operators.edit', $row->username);
-                $deleteUrl = route('operators.destroy', $row->username);
+                $detailUrl = route('cashiers.show', $row->username);
+                $editUrl = route('cashiers.edit', $row->username);
+                $deleteUrl = route('cashiers.destroy', $row->username);
 
                 return "
                     <a href='{$detailUrl}' class='btn btn-sm btn-primary spa-link'>Detail <i class='bi bi-arrow-right'></i></a>
@@ -60,7 +60,7 @@ class OperatorController extends Controller
      */
     public function create(Request $request)
     {
-        return spaRender($request, 'operators.create');
+        return spaRender($request, 'cashiers.create');
     }
 
     /**
@@ -84,8 +84,8 @@ class OperatorController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Operator berhasil ditambahkan.',
-            'redirect' => route('operators.index'),
+            'message' => 'Kasir baru telah berhasil ditambahkan.',
+            'redirect' => route('cashiers.index'),
             'redirect_type' => 'spa',
         ]);
     }
@@ -93,44 +93,44 @@ class OperatorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, User $operator)
+    public function show(Request $request, User $cashier)
     {
-        $activities = $operator->activities()->latest()->take(10)->get();
+        $activities = $cashier->activities()->latest()->take(10)->get();
 
         $data = [
-            'operator' => $operator,
+            'cashier' => $cashier,
             'activities' => $activities,
         ];
 
-        return spaRender($request, 'operators.show', $data);
+        return spaRender($request, 'cashiers.show', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, User $operator)
+    public function edit(Request $request, User $cashier)
     {
         $data = [
-            'operator' => $operator,
+            'cashier' => $cashier,
         ];
 
-        return spaRender($request, 'operators.edit', $data);
+        return spaRender($request, 'cashiers.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $operator)
+    public function update(Request $request, User $cashier)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $operator->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $cashier->id,
             'password' => 'nullable|string|min:6|confirmed',
             'status' => 'boolean',
         ]);
 
-        return DB::transaction(function () use ($request, $operator) {
-            $operator->update([
+        return DB::transaction(function () use ($request, $cashier) {
+            $cashier->update([
                 'name' => $request->name,
                 'username' => $request->username,
                 'status' => $request->boolean('status'),
@@ -139,8 +139,8 @@ class OperatorController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Operator berhasil diperbarui.',
-                'redirect' => route('operators.show', $operator->username),
+                'message' => 'cashier berhasil diperbarui.',
+                'redirect' => route('cashiers.show', $cashier->username),
                 'redirect_type' => 'http',
             ]);
         });
@@ -149,14 +149,14 @@ class OperatorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $operator)
+    public function destroy(User $cashier)
     {
-        $operator->delete();
+        $cashier->delete();
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Operator berhasil dihapus.',
-            'redirect' => route('operators.index'),
+            'message' => 'Kasir berhasil dihapus.',
+            'redirect' => route('cashiers.index'),
             'redirect_type' => 'http',
         ]);
     }

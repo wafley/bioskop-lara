@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', 'Operators')
+@section('title', 'Data Kasir')
 
 @section('breadcrumb')
     @include('_partials.breadcrumb')
@@ -24,7 +24,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col d-flex align-items-center gap-3">
-                            <a href="{{ route('operators.create') }}" class="btn btn-primary spa-link">
+                            <a href="{{ route('cashiers.create') }}" class="btn btn-primary spa-link">
                                 <i class="me-2 ti ti-user-plus"></i>
                                 Tambah
                             </a>
@@ -41,7 +41,7 @@
                                     <div class="spinner-border text-primary d-block mx-auto" aria-hidden="true"></div>
                                     <span role="status">Sedang memproses...</span>
                                 </div>
-                                <table id="operators-table" class="table mb-0 table-striped table-bordered">
+                                <table id="cashiers-table" class="table mb-0 table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -65,19 +65,19 @@
 @section('scripts')
     <script src="{{ asset('templates/libs/datatables/datatables.min.js') }}" data-partial="1"></script>
     <script data-partial="1">
-        window.operatorsTable = window.operatorsTable || null;
+        window.cashiersTable = window.cashiersTable || null;
 
-        function initOperatorsTable() {
-            if ($.fn.DataTable.isDataTable("#operators-table")) {
-                $("#operators-table").DataTable().destroy();
+        function initCashiersTable() {
+            if ($.fn.DataTable.isDataTable("#cashiers-table")) {
+                $("#cashiers-table").DataTable().destroy();
             }
 
-            window.operatorsTable = $("#operators-table").DataTable({
+            window.cashiersTable = $("#cashiers-table").DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
                 ajax: {
-                    url: "{{ route('operators.data') }}",
+                    url: "{{ route('cashiers.data') }}",
                     data: function(d) {
                         d.status = $("#filter-status").val();
                     },
@@ -134,10 +134,10 @@
             });
         }
 
-        initOperatorsTable();
+        initCashiersTable();
 
         // Table loader animation
-        window.operatorsTable.on('processing.dt', function(e, settings, processing) {
+        window.cashiersTable.on('processing.dt', function(e, settings, processing) {
             if (processing) {
                 $('#table-loader').show();
             } else {
@@ -147,12 +147,12 @@
 
         // Refresh table
         $("#refresh-btn").on("click", function() {
-            window.operatorsTable.ajax.reload();
+            window.cashiersTable.ajax.reload();
         });
 
         // Filter status
         $("#filter-status").on("change", function() {
-            window.operatorsTable.ajax.reload();
+            window.cashiersTable.ajax.reload();
         });
     </script>
 @endsection

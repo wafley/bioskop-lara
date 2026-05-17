@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\StudioController;
-use App\Http\Controllers\Admin\OperatorController;
+use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
 
 Route::get('/', function () {
@@ -33,9 +33,9 @@ Route::middleware('auth')->group(function () {
 
     // Admin Routes
     Route::middleware('role:admin')->group(function () {
-        // Operators Route
-        Route::get('/operators/data', [OperatorController::class, 'data'])->name('operators.data');
-        Route::resource('operators', OperatorController::class);
+        // Cashiers Route
+        Route::get('/cashiers/data', [CashierController::class, 'data'])->name('cashiers.data');
+        Route::resource('cashiers', CashierController::class);
 
         // Movies Route
         Route::resource('movies', MovieController::class);

@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = Role::whereIn('name', ['admin', 'operator'])
+        $roles = Role::whereIn('name', ['admin', 'cashier'])
             ->pluck('id', 'name');
 
         $users = [
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
                 'name' => 'Winandi',
                 'username' => 'winandi',
                 'password' => Hash::make('winandi'),
-                'role_id' => $roles['operator'] ?? null,
+                'role_id' => $roles['cashier'] ?? null,
                 'status' => true,
             ],
         ];

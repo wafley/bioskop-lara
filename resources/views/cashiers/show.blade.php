@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', $operator->name)
+@section('title', $cashier->name)
 
 @section('breadcrumb')
     @include('_partials.breadcrumb')
@@ -12,24 +12,24 @@
                 <div class="card-header">
                     <h4 class="card-title mb-0">Informasi Akun</h4>
                     <small class="text-muted w-100">
-                        Terakhir diperbarui {{ formatDate($operator->updated_at) }}
+                        Terakhir diperbarui {{ formatDate($cashier->updated_at) }}
                     </small>
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center mb-3">
                         <div class="avatar avatar-xxl mb-3">
-                            <img src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}" alt="{{ $operator->name }}" class="rounded-circle img-fluid">
+                            <img src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}" alt="{{ $cashier->name }}" class="rounded-circle img-fluid">
                         </div>
 
-                        <h5 class="mb-1">{{ $operator->name }}</h5>
-                        <span class="">{{ ucfirst($operator->role->label) }}</span>
+                        <h5 class="mb-1">{{ $cashier->name }}</h5>
+                        <span class="">{{ ucfirst($cashier->role->label) }}</span>
                     </div>
 
                     <div class="d-flex align-items-center gap-3">
-                        <a href="{{ route('operators.edit', $operator->username) }}" class="btn btn-info spa-link w-100">
+                        <a href="{{ route('cashiers.edit', $cashier->username) }}" class="btn btn-info spa-link w-100">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
-                        <button class="btn btn-danger w-100" data-ajax="delete" data-url="{{ route('operators.destroy', $operator->username) }}">
+                        <button class="btn btn-danger w-100" data-ajax="delete" data-url="{{ route('cashiers.destroy', $cashier->username) }}">
                             <i class="bi bi-trash"></i> Hapus
                         </button>
                     </div>
@@ -41,20 +41,20 @@
                             <tbody>
                                 <tr>
                                     <th width="25%" class="text-muted fw-bold">Username</th>
-                                    <td class="font-monospace">: {{ $operator->username }}</td>
+                                    <td class="font-monospace">: {{ $cashier->username }}</td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted fw-bold">Status</th>
                                     <td class="font-monospace">
                                         :
-                                        <span class="badge text-bg-{{ $operator->status_color }}">
-                                            {{ $operator->status_label }}
+                                        <span class="badge text-bg-{{ $cashier->status_color }}">
+                                            {{ $cashier->status_label }}
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th class="text-muted fw-bold">Dibuat Pada</th>
-                                    <td class="font-monospace">: {{ formatDate($operator->created_at) }}</td>
+                                    <td class="font-monospace">: {{ formatDate($cashier->created_at) }}</td>
                                 </tr>
                             </tbody>
                         </table>

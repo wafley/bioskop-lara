@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', 'Edit Operator')
+@section('title', 'Edit Kasir')
 
 @section('breadcrumb')
     @include('_partials.breadcrumb')
@@ -8,7 +8,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <form action="{{ route('operators.update', $operator->id) }}" method="POST" data-ajax="true">
+            <form action="{{ route('cashiers.update', $cashier->id) }}" method="POST" data-ajax="true">
                 @csrf
                 @method('PUT')
 
@@ -16,19 +16,18 @@
                     <div class="card-body pb-0">
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama</label>
-                            <input type="text" name="name" id="name" class="form-control" value="{{ $operator->name }}">
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $cashier->name }}">
                         </div>
 
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" name="username" id="username" class="form-control" value="{{ $operator->username }}">
+                            <input type="text" name="username" id="username" class="form-control" value="{{ $cashier->username }}">
                         </div>
 
                         <div class="mb-3">
                             <label for="password" class="form-label">Password Baru</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Isi jika ingin mengganti password">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Isi jika ingin mengganti password">
                                 <button class="btn btn-light" type="button" onclick="togglePassword('password', this)">
                                     <i class='fa fa-eye'></i>
                                 </button>
@@ -39,8 +38,7 @@
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                                    placeholder="Konfirmasi password baru">
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi password baru">
                                 <button class="btn btn-light" type="button" onclick="togglePassword('password_confirmation', this)">
                                     <i class='fa fa-eye'></i>
                                 </button>
@@ -50,10 +48,9 @@
 
                         <div class="form-check form-switch">
                             <input type="hidden" name="status" value="0">
-                            <input class="form-check-input" type="checkbox" id="status" name="status" value="1"
-                                {{ old('status', $operator->status) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status', $cashier->status) ? 'checked' : '' }}>
                             <label class="form-check-label" for="status">
-                                {{ old('status', $operator->status) ? 'Aktif' : 'Tidak Aktif' }}
+                                {{ old('status', $cashier->status) ? 'Aktif' : 'Tidak Aktif' }}
                             </label>
                         </div>
                     </div>
@@ -61,7 +58,7 @@
                         <button type="submit" class="btn btn-primary">
                             Simpan
                         </button>
-                        <a href="{{ route('operators.show', $operator->username) }}" class="btn btn-secondary spa-link">Batal</a>
+                        <a href="{{ route('cashiers.show', $cashier->username) }}" class="btn btn-secondary spa-link">Batal</a>
                     </div>
                 </div>
             </form>

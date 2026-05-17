@@ -18,8 +18,8 @@ class RoleSeeder extends Seeder
                 'redirect' => 'dashboard.index'
             ],
             [
-                'name' => 'operator',
-                'label' => 'Operator',
+                'name' => 'cashier',
+                'label' => 'Cashier',
                 'redirect' => 'dashboard.index'
             ],
         ];
