@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ticket extends Model
@@ -21,6 +22,32 @@ class Ticket extends Model
     public function getRouteKeyName()
     {
         return 'ticket_code';
+    }
+
+    protected function statusLabel(): Attribute
+    {
+        return Attribute::get(fn($value, array $attributes) => match ($attributes['status']) {
+            'active' => (object) [
+                'text' => 'Aktif',
+                'class' => 'primary',
+                'icon' => 'bi-ticket-perforated-fill'
+            ],
+            'used' => (object) [
+                'text' => 'Sudah Digunakan',
+                'class' => 'secondary',
+                'icon' => 'bi-qr-code-scan'
+            ],
+            'refunded' => (object) [
+                'text' => 'Dikembalikan (Refund)',
+                'class' => 'danger',
+                'icon' => 'bi-arrow-counterclockwise'
+            ],
+            default => (object) [
+                'text' => ucfirst($attributes['status']),
+                'class' => 'light',
+                'icon' => 'bi-info-circle'
+            ],
+        });
     }
 
     /**
