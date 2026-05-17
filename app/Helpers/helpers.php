@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 if (!function_exists('spaRender')) {
@@ -72,9 +74,35 @@ if (!function_exists('formatDate')) {
 }
 
 if (!function_exists('generateUniqueId')) {
-    function generateUniqueId()
+    function generateUniqueId(?int $length = null): string
     {
-        return Str::uuid();
+        $id = str_replace('-', '', (string) Str::ulid());
+
+        return $length
+            ? substr($id, 0, $length)
+            : $id;
+    }
+}
+
+if (!function_exists('generateInvoiceNumber')) {
+    function generateInvoiceNumber(): string
+    {
+        return DB::transaction(function () {
+
+            $prefix = 'INV-' . now()->format('Ymd') . '-';
+
+            $latestInvoice = Transaction::query()
+                ->where('invoice_number', 'like', "{$prefix}%")
+                ->lockForUpdate()
+                ->latest('invoice_number')
+                ->value('invoice_number');
+
+            $lastNumber = $latestInvoice
+                ? (int) str($latestInvoice)->after($prefix)
+                : 0;
+
+            return $prefix . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        });
     }
 }
 
