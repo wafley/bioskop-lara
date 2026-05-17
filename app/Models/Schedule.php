@@ -48,14 +48,14 @@ class Schedule extends Model
         ];
     }
 
-    /**
-     * Relations
-     */
-
     public function getRouteKeyName()
     {
         return 'uuid';
     }
+
+    /**
+     * Relations
+     */
 
     public function movie(): BelongsTo
     {
