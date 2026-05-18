@@ -11,7 +11,7 @@
             <div class="card custom-card">
                 <div class="card-body">
                     <div class="row mb-3">
-                        <div class="col">
+                        <div class="col-lg-8">
                             <label class="form-label">Filter Status</label>
                             <select class="form-select w-auto" onchange="filterStatus(this.value)">
                                 <option value="">Semua Status</option>
@@ -19,6 +19,23 @@
                                 <option value="coming_soon" {{ request('status') === 'coming_soon' ? 'selected' : '' }}>Segera Tayang</option>
                                 <option value="ended" {{ request('status') === 'ended' ? 'selected' : '' }}>Berakhir</option>
                             </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <form method="GET" action="{{ route('movies.index') }}">
+                                <label class="form-label">Cari Film</label>
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Cari berdasarkan judul film..." value="{{ request('search') }}">
+
+                                    @if (request('status') !== null)
+                                        <input type="hidden" name="status" value="{{ request('status') }}">
+                                    @endif
+
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 

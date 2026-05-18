@@ -21,6 +21,10 @@ class MovieController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
         $movies = $query->paginate(15)->withQueryString();
 
         return spaRender($request, 'movies.index', [
