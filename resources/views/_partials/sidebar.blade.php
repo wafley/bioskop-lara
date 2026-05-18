@@ -81,6 +81,19 @@
                     </li>
                     <!-- End::slide -->
                 @endrole
+
+                @role('cashier')
+                    <!-- Start::slide -->
+                    <li class="slide">
+                        <a href="{{ route('booking.index') }}" class="side-menu__item {{ isActive('booking.*') }} spa-link">
+                            <span class="side-menu__icon">
+                                <i class='fe fe-tag'></i>
+                            </span>
+                            <span class="side-menu__label">Pesan Tiket</span>
+                        </a>
+                    </li>
+                    <!-- End::slide -->
+                @endrole
             </ul>
 
             <div class="slide-right" id="slide-right">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\StudioController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Cashier\BookingController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -47,6 +48,14 @@ Route::middleware('auth')->group(function () {
 
         // Schedule Route
         Route::resource('schedules', ScheduleController::class);
+    });
+
+    // Cashier Routes
+    Route::middleware('role:cashier')->group(function () {
+        // Booking Route
+        Route::prefix('booking')->name('booking.')->group(function () {
+            Route::get('/', [BookingController::class, 'index'])->name('index');
+        });
     });
 
     // Logout Route
