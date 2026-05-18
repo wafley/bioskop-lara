@@ -5,31 +5,6 @@
     @include('_partials.breadcrumb')
 @endsection
 
-@section('styles')
-    <style>
-        .hover-gap:hover {
-            background-color: rgba(13, 110, 253, 0.1) !important;
-            border: 1px dashed #0d6efd;
-        }
-
-        .hover-opacity-100 {
-            transition: opacity 0.2s;
-        }
-
-        .hover-gap:hover .hover-opacity-100 {
-            opacity: 1 !important;
-        }
-
-        .btn-outline-dashed {
-            border: 1px dashed #dee2e6;
-        }
-
-        .timeline-container {
-            overflow: hidden;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="row mb-3">
         <div class="col-md-3">
