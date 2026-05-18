@@ -27,6 +27,10 @@ class StudioController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
         $studios = $query->paginate(15)->withQueryString();
 
         return spaRender($request, 'studios.index', [
