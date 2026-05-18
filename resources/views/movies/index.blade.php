@@ -15,8 +15,9 @@
                             <label class="form-label">Filter Status</label>
                             <select class="form-select w-auto" onchange="filterStatus(this.value)">
                                 <option value="">Semua Status</option>
-                                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Open</option>
-                                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Closed</option>
+                                <option value="now_showing" {{ request('status') === 'now_showing' ? 'selected' : '' }}>Sedang Tayang</option>
+                                <option value="coming_soon" {{ request('status') === 'coming_soon' ? 'selected' : '' }}>Segera Tayang</option>
+                                <option value="ended" {{ request('status') === 'ended' ? 'selected' : '' }}>Berakhir</option>
                             </select>
                         </div>
                     </div>
