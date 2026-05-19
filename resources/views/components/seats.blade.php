@@ -1,4 +1,8 @@
-@php $seats = $seats ?? []; @endphp
+@props([
+    'seats' => [],
+    'bookedSeatIds' => [],
+    'basePrice' => 0,
+])
 
 @php
     function seatButtonClass($seat, $isEdit = true, $isBooked = false)
@@ -40,12 +44,19 @@
 
                     @foreach (collect($seatRow)->where('section', $section) as $seat)
                         @php
-                            $isBooked = isset($bookedSeatIds) && in_array($seat->id, $bookedSeatIds);
+                            $seatId = $seat->id ?? null;
+
+                            $seatType = $seat->type ?? 'regular';
+
+                            $seatPrice = $seatType === 'vip' ? $basePrice + 10000 : $basePrice;
+
+                            $isBooked = $seatId && in_array($seatId, $bookedSeatIds);
 
                             $classes = seatButtonClass($seat, true, $isBooked);
                         @endphp
 
-                        <button type="button" class="{{ $classes }} seat-item" data-seat-id="{{ $seat->id }}" {{ $isBooked ? 'disabled' : '' }}>
+                        <button type="button" class="{{ $classes }} seat-item" data-seat-id="{{ $seatId }}" data-seat-code="{{ $seat->seat_code }}"
+                            data-seat-type="{{ $seatType }}" data-seat-price="{{ $seatPrice }}" {{ $isBooked ? 'disabled' : '' }}>
                             {{ $seat->seat_code }}
                         </button>
                     @endforeach
