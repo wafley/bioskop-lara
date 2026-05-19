@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\StudioController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\StudioController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
 
