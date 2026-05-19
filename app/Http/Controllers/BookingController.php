@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cashier;
+namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use App\Models\Schedule;
