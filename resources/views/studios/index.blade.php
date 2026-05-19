@@ -39,10 +39,12 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col d-flex align-items-center gap-3">
-                            <a href="{{ route('studios.create') }}" class="btn btn-primary spa-link">
-                                <i class="me-2 bi bi-plus"></i>
-                                Tambah
-                            </a>
+                            @role('admin')
+                                <a href="{{ route('studios.create') }}" class="btn btn-primary spa-link">
+                                    <i class="me-2 bi bi-plus"></i>
+                                    Tambah
+                                </a>
+                            @endrole
                             <a href="{{ route('studios.index') }}" class="btn btn-success spa-link">
                                 <i class="me-2 ti ti-rotate"></i>
                                 Refresh

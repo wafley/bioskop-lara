@@ -36,6 +36,28 @@
                 </li>
                 <!-- End::slide -->
 
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('movies.index') }}" class="side-menu__item {{ isActive('movies.*') }} spa-link">
+                        <span class="side-menu__icon">
+                            <i class='fe fe-film'></i>
+                        </span>
+                        <span class="side-menu__label">Film</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
+                <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('studios.index') }}" class="side-menu__item {{ isActive('studios.*') }} spa-link">
+                        <span class="side-menu__icon">
+                            <i class='fe fe-airplay'></i>
+                        </span>
+                        <span class="side-menu__label">Studio</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
                 @role('admin')
                     <!-- Start::slide -->
                     <li class="slide">
@@ -44,28 +66,6 @@
                                 <i class='fe fe-users'></i>
                             </span>
                             <span class="side-menu__label">Data Kasir</span>
-                        </a>
-                    </li>
-                    <!-- End::slide -->
-
-                    <!-- Start::slide -->
-                    <li class="slide">
-                        <a href="{{ route('movies.index') }}" class="side-menu__item {{ isActive('movies.*') }} spa-link">
-                            <span class="side-menu__icon">
-                                <i class='fe fe-film'></i>
-                            </span>
-                            <span class="side-menu__label">Film</span>
-                        </a>
-                    </li>
-                    <!-- End::slide -->
-
-                    <!-- Start::slide -->
-                    <li class="slide">
-                        <a href="{{ route('studios.index') }}" class="side-menu__item {{ isActive('studios.*') }} spa-link">
-                            <span class="side-menu__icon">
-                                <i class='fe fe-airplay'></i>
-                            </span>
-                            <span class="side-menu__label">Studio</span>
                         </a>
                     </li>
                     <!-- End::slide -->

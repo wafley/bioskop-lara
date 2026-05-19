@@ -25,14 +25,17 @@
                                 Terakhir diperbarui {{ formatDate($studio->updated_at) }}
                             </small>
                         </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <a href="{{ route('studios.edit', $studio->slug) }}" class="btn btn-info spa-link">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                            <button class="btn btn-danger" data-ajax="delete" data-url="{{ route('studios.destroy', $studio->slug) }}">
-                                <i class="bi bi-trash"></i> Hapus
-                            </button>
-                        </div>
+
+                        @role('admin')
+                            <div class="d-flex align-items-center gap-3">
+                                <a href="{{ route('studios.edit', $studio->slug) }}" class="btn btn-info spa-link">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <button class="btn btn-danger" data-ajax="delete" data-url="{{ route('studios.destroy', $studio->slug) }}">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>
+                        @endrole
                     </div>
                 </div>
                 <div class="card-body">

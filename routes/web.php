@@ -23,10 +23,10 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
-    // Dashboard Route
+    // Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    // Profile Route
+    // Profile Routes
     Route::controller(ProfileController::class)->prefix('profile')->group(function () {
         Route::get('/', 'index')->name('profile.index');
         Route::put('/', 'update')->name('profile.update');
@@ -34,29 +34,40 @@ Route::middleware('auth')->group(function () {
 
     // Admin Routes
     Route::middleware('role:admin')->group(function () {
-        // Cashiers Route
+        // Cashiers Routes
         Route::get('/cashiers/data', [CashierController::class, 'data'])->name('cashiers.data');
         Route::resource('cashiers', CashierController::class);
 
-        // Movies Route
-        Route::resource('movies', MovieController::class);
+        // Movies Routes
+        Route::resource('movies', MovieController::class)->except(['index', 'show']);
 
-        // Studios Route
-        Route::resource('studios', StudioController::class);
+        // Studios Routes
+        Route::resource('studios', StudioController::class)->except(['index', 'show']);
         Route::post('/studios/render-seats', [StudioController::class, 'renderSeats'])->name('studios.render');
         Route::post('/studios/{studio}/add-vip', [StudioController::class, 'addVip'])->name('studios.add-vip');
 
-        // Schedule Route
+        // Schedule Routes
         Route::resource('schedules', ScheduleController::class);
     });
 
     // Cashier Routes
     Route::middleware('role:cashier')->group(function () {
-        // Booking Route
+        // Booking Routes
         Route::prefix('booking')->name('booking.')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('index');
             Route::get('/{schedule}', [BookingController::class, 'show'])->name('show');
         });
+    });
+
+    Route::middleware('role:admin,cashier')->group(function () {
+
+        Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
+
+        Route::get('movies/{movie}', [MovieController::class, 'show'])->name('movies.show');
+
+        Route::get('studios', [StudioController::class, 'index'])->name('studios.index');
+
+        Route::get('studios/{studio}', [StudioController::class, 'show'])->name('studios.show');
     });
 
     // Logout Route
