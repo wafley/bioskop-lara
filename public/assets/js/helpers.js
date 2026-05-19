@@ -32,6 +32,6 @@ function showToast(icon, message, timer = 3000) {
 }
 
 // Input Price handler
-$("#price").on("input", function () {
+$("#price, #amount_paid").on("input", function () {
     this.value = this.value.replace(/[^0-9]/g, "");
 });
