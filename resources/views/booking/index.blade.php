@@ -60,7 +60,8 @@
 
                                                 <div class="list-group">
                                                     @foreach ($sortedSchedules as $sch)
-                                                        <a href="" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center spa-link">
+                                                        <a href="{{ route('booking.show', $sch->uuid) }}"
+                                                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center spa-link">
                                                             <div>
                                                                 <div class="badge text-bg-secondary">
                                                                     {{ $sch->studio->name }}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cashier;
 
+use App\Models\Ticket;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,6 +26,24 @@ class BookingController extends Controller
 
         return spaRender($request, 'booking.index', [
             'schedules' => $schedules,
+        ]);
+    }
+
+    public function show(Request $request, Schedule $schedule)
+    {
+        $schedule->load(['movie', 'studio']);
+
+        $seats = $schedule->studio->seats->groupBy('row');
+
+        $bookedSeatIds = Ticket::where('schedule_id', $schedule->id)
+            ->whereIn('status', ['active', 'used'])
+            ->pluck('seat_id')
+            ->toArray();
+
+        return spaRender($request, 'booking.show', [
+            'schedule'      => $schedule,
+            'seats'         => $seats,
+            'bookedSeatIds' => $bookedSeatIds,
         ]);
     }
 }

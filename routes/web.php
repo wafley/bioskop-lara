@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
         // Booking Route
         Route::prefix('booking')->name('booking.')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('index');
+            Route::get('/{schedule}', [BookingController::class, 'show'])->name('show');
         });
     });
 
