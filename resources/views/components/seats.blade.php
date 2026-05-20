@@ -48,7 +48,7 @@
 
                             $seatType = $seat->type ?? 'regular';
 
-                            $seatPrice = $seatType === 'vip' ? $basePrice + 10000 : $basePrice;
+                            $seatPrice = $seatType === 'vip' ? $basePrice + \App\Helpers\SettingHelper::get('vip_surcharge', 35000) : $basePrice;
 
                             $isBooked = $seatId && in_array($seatId, $bookedSeatIds);
 

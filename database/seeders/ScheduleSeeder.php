@@ -7,11 +7,17 @@ use App\Models\Movie;
 use App\Models\Studio;
 use App\Models\Schedule;
 use Illuminate\Support\Str;
+use App\Helpers\SettingHelper;
 use Illuminate\Database\Seeder;
 
 class ScheduleSeeder extends Seeder
 {
-    protected $cleaningBuffer = 20;
+    protected $cleaningBuffer;
+
+    public function __construct()
+    {
+        $this->cleaningBuffer = (int) SettingHelper::get('cleaning_buffer', 20);
+    }
 
     public function run(): void
     {
@@ -42,8 +48,13 @@ class ScheduleSeeder extends Seeder
             $totalInQueue = $dailyQueue->count();
 
             foreach ($studios as $studio) {
-                $currentTime = $showDate->copy()->setTime(10, 0, 0);
-                $closingTime = $showDate->copy()->setTime(23, 59, 0);
+                $currentTime = $showDate->copy()->setTimeFromTimeString(
+                    SettingHelper::get('opening_time', '10:00')
+                );
+
+                $closingTime = $showDate->copy()->setTimeFromTimeString(
+                    SettingHelper::get('closing_time', '23:59')
+                );
 
                 $attempts = 0;
                 $maxAttempts = $totalInQueue;
@@ -75,14 +86,19 @@ class ScheduleSeeder extends Seeder
 
                     $attempts = 0;
 
+                    $weekdayPrice = (int) SettingHelper::get('weekday_prices', 40000);
+                    $fridayPrice  = (int) SettingHelper::get('friday_prices', 50000);
+                    $weekendPrice = (int) SettingHelper::get('weekend_prices', 65000);
+                    $vipSurcharge = (int) SettingHelper::get('vip_surcharge', 35000);
+
                     $priceBase = match (true) {
-                        $showDate->isFriday() => 50000,
-                        $showDate->isWeekend() => 65000,
-                        default => 40000,
+                        $showDate->isFriday() => $fridayPrice,
+                        $showDate->isWeekend() => $weekendPrice,
+                        default => $weekdayPrice,
                     };
 
                     $finalPrice = (in_array($studio->name, ['VIP', 'Premiere', 'IMAX']))
-                        ? $priceBase + 35000
+                        ? $priceBase + $vipSurcharge
                         : $priceBase;
 
                     Schedule::create([

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\SettingHelper;
 use Illuminate\Support\Str;
 use App\Models\Schedule;
 use App\Models\Movie;
@@ -10,9 +11,16 @@ use Carbon\Carbon;
 
 class ScheduleService
 {
-    protected $openingTime = '10:00';
-    protected $closingTime = '23:59';
-    protected $cleaningBuffer = 20;
+    protected $openingTime;
+    protected $closingTime;
+    protected $cleaningBuffer;
+
+    public function __construct()
+    {
+        $this->openingTime = SettingHelper::get('opening_time', '10:00');
+        $this->closingTime = SettingHelper::get('closing_time', '23:59');
+        $this->cleaningBuffer = (int) SettingHelper::get('cleaning_buffer', 20);
+    }
 
     /**
      * Create a new schedule entry.
@@ -143,10 +151,19 @@ class ScheduleService
      */
     private function calculatePrice(Carbon $showDate, string $studioName): int
     {
-        $priceBase = $showDate->isWeekend() ? 65000 : ($showDate->isFriday() ? 50000 : 40000);
+        $weekdayPrice = (int) SettingHelper::get('weekday_prices', 40000);
+        $fridayPrice  = (int) SettingHelper::get('friday_prices', 50000);
+        $weekendPrice = (int) SettingHelper::get('weekend_prices', 65000);
+        $vipSurcharge = (int) SettingHelper::get('vip_surcharge', 35000);
+
+        $priceBase = match (true) {
+            $showDate->isFriday() => $fridayPrice,
+            $showDate->isWeekend() => $weekendPrice,
+            default => $weekdayPrice,
+        };
 
         return (in_array($studioName, ['VIP', 'Premiere', 'IMAX']))
-            ? $priceBase + 35000
+            ? $priceBase + $vipSurcharge
             : $priceBase;
     }
 
