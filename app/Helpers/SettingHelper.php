@@ -13,7 +13,7 @@ class SettingHelper
 
     public static function get($key, $default = null)
     {
-        return optional(Setting::where('key', $key)->first())->value ?? $default;
+        return Setting::where('key', $key)->value('value') ?? $default;
     }
 
     public static function set($key, $value)
