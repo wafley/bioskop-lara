@@ -80,6 +80,17 @@
                         </a>
                     </li>
                     <!-- End::slide -->
+
+                    <!-- Start::slide -->
+                    <li class="slide">
+                        <a href="{{ route('settings.index') }}" class="side-menu__item {{ isActive('settings.index') }} spa-link">
+                            <span class="side-menu__icon">
+                                <i class='fe fe-settings'></i>
+                            </span>
+                            <span class="side-menu__label">Pengaturan</span>
+                        </a>
+                    </li>
+                    <!-- End::slide -->
                 @endrole
 
                 @role('cashier')
@@ -94,6 +105,7 @@
                     </li>
                     <!-- End::slide -->
                 @endrole
+
             </ul>
 
             <div class="slide-right" id="slide-right">

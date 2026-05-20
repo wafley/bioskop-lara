@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
 
         // Schedule Routes
         Route::resource('schedules', ScheduleController::class);
+
+        // Settings Routes
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     });
 
     // Cashier Routes

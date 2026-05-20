@@ -31,13 +31,12 @@
             </div>
 
             <div class="header-element mainuserProfile">
-                <a href="javascript:void(0);" class="header-link dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown"
-                    data-bs-auto-close="outside" aria-expanded="false">
+                <a href="javascript:void(0);" class="header-link dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                    aria-expanded="false">
                     <div class="d-flex align-items-center">
                         <div class="d-sm-flex wd-100p lh-0">
                             <div class="avatar avatar-md">
-                                <img alt="avatar" class="rounded-circle"
-                                    src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}">
+                                <img alt="avatar" class="rounded-circle" src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}">
                             </div>
                             <div class="ms-2 my-auto d-none d-xl-flex">
                                 <h6 class=" font-weight-semibold mb-0 fs-13 user-name d-sm-block d-none">
@@ -48,13 +47,11 @@
                     </div>
                 </a>
 
-                <div class="main-header-dropdown dropdown-menu pt-0 border-0 header-profile-dropdown dropdown-menu-end dropdown-menu-arrow"
-                    aria-labelledby="mainHeaderProfile">
+                <div class="main-header-dropdown dropdown-menu pt-0 border-0 header-profile-dropdown dropdown-menu-end dropdown-menu-arrow" aria-labelledby="mainHeaderProfile">
                     <div class="p-3 menu-header-content text-fixed-white rounded-top text-center">
                         <div class="">
                             <div class="avatar avatar-xl rounded-circle">
-                                <img alt="" class="rounded-circle"
-                                    src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}">
+                                <img alt="" class="rounded-circle" src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}">
                             </div>
                             <p class="text-fixed-white fs-18 fw-semibold mb-0">
                                 {{ Auth::user()->name ?? 'Admin' }}
@@ -70,7 +67,11 @@
                     <div>
                         <a class="dropdown-item spa-link" href="{{ route('profile.index') }}">
                             <i class="fa fa-user me-1"></i>
-                            Profile
+                            Profil Saya
+                        </a>
+                        <a class="dropdown-item spa-link" href="{{ route('settings.index') }}">
+                            <i class="fa fa-cog me-1"></i>
+                            Pengaturan
                         </a>
                         <a class="dropdown-item text-danger" href="#!" id="logout-btn">
                             <i class="fa fa-sign-out-alt me-1"></i>
