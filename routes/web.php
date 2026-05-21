@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         // Cashiers Routes
         Route::get('/cashiers/data', [CashierController::class, 'data'])->name('cashiers.data');
-        Route::resource('cashiers', CashierController::class);
+        Route::post('/cashiers/{cashier}/reset-password', [CashierController::class, 'resetPassword'])->name('cashiers.reset-password');
+        Route::resource('cashiers', CashierController::class)->except('edit');
 
         // Movies Routes
         Route::resource('movies', MovieController::class)->except(['index', 'show']);

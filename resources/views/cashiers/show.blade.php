@@ -8,59 +8,66 @@
 @section('content')
     <div class="row">
         <div class="col-lg-8">
-            <div class="card custom-card">
-                <div class="card-header">
-                    <h4 class="card-title mb-0">Informasi Akun</h4>
-                    <small class="text-muted w-100">
-                        Terakhir diperbarui {{ formatDate($cashier->updated_at) }}
-                    </small>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex flex-column align-items-center text-center mb-3">
-                        <div class="avatar avatar-xxl mb-3">
-                            <img src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}" alt="{{ $cashier->name }}" class="rounded-circle img-fluid">
+            <form action="{{ route('cashiers.update', $cashier->username) }}" method="POST" data-ajax="true">
+                @csrf
+                @method('PUT')
+
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Informasi Akun</h4>
+                        <small class="text-muted w-100">
+                            Terakhir diperbarui {{ formatDate($cashier->updated_at) }}
+                        </small>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center mb-3">
+                            <div class="avatar avatar-xxl mb-3">
+                                <img src="{{ asset('assets/images/placeholders/profile-placeholder.jpg') }}" alt="{{ $cashier->name }}" class="rounded-circle img-fluid">
+                            </div>
+
+                            <h5 class="mb-1">{{ $cashier->name }}</h5>
+                            <span class="">{{ ucfirst($cashier->role->label) }}</span>
                         </div>
 
-                        <h5 class="mb-1">{{ $cashier->name }}</h5>
-                        <span class="">{{ ucfirst($cashier->role->label) }}</span>
-                    </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="button" id="btn-reset-password" class="btn btn-warning w-100" data-url="{{ route('cashiers.reset-password', $cashier->username) }}">
+                                <i class="bi bi-unlock-fill"></i> Reset Password
+                            </button>
+                            <button class="btn btn-danger w-100" data-ajax="delete" data-url="{{ route('cashiers.destroy', $cashier->username) }}">
+                                <i class="bi bi-trash"></i> Hapus
+                            </button>
+                        </div>
 
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="{{ route('cashiers.edit', $cashier->username) }}" class="btn btn-info spa-link w-100">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        <button class="btn btn-danger w-100" data-ajax="delete" data-url="{{ route('cashiers.destroy', $cashier->username) }}">
-                            <i class="bi bi-trash"></i> Hapus
+                        <hr />
+
+                        <div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama</label>
+                                <input type="text" name="name" id="name" class="form-control" value="{{ $cashier->name }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" name="username" id="username" class="form-control" value="{{ $cashier->username }}">
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input type="hidden" name="status" value="0">
+                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status', $cashier->status) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="status">
+                                    {{ old('status', $cashier->status) ? 'Aktif' : 'Tidak Aktif' }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">
+                            Simpan
                         </button>
-                    </div>
-
-                    <hr />
-
-                    <div class="table-responsive">
-                        <table class="table table-borderless mb-0">
-                            <tbody>
-                                <tr>
-                                    <th width="25%" class="text-muted fw-bold">Username</th>
-                                    <td class="font-monospace">: {{ $cashier->username }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted fw-bold">Status</th>
-                                    <td class="font-monospace">
-                                        :
-                                        <span class="badge text-bg-{{ $cashier->status_color }}">
-                                            {{ $cashier->status_label }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="text-muted fw-bold">Dibuat Pada</th>
-                                    <td class="font-monospace">: {{ formatDate($cashier->created_at) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <a href="{{ route('cashiers.index') }}" class="btn btn-secondary spa-link">Kembali</a>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="col-lg-4">
@@ -93,4 +100,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script data-partial="1">
+        $(document).on('click', '#btn-reset-password', function() {
+            const url = $(this).data('url');
+
+            Swal.fire({
+                title: 'Reset password?',
+                text: 'Password akan direset menjadi "12345678"',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, reset',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (!result.isConfirmed) return;
+
+                ajaxRequest({
+                    url: url,
+                    method: 'POST',
+                });
+            });
+        });
+    </script>
 @endsection

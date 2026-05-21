@@ -42,13 +42,9 @@ class CashierController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $detailUrl = route('cashiers.show', $row->username);
-                $editUrl = route('cashiers.edit', $row->username);
-                $deleteUrl = route('cashiers.destroy', $row->username);
 
                 return "
-                    <a href='{$detailUrl}' class='btn btn-sm btn-primary spa-link'>Detail <i class='bi bi-arrow-right'></i></a>
-                    <a href='{$editUrl}' class='btn btn-sm btn-info spa-link'><i class='bi bi-pencil-square'></i></a>
-                    <button class='btn btn-sm btn-danger' data-ajax='delete' data-url='{$deleteUrl}'><i class='bi bi-trash'></i></button>
+                    <a href='{$detailUrl}' class='btn btn-sm btn-primary w-100 spa-link'>Detail <i class='bi bi-arrow-right'></i></a>
                 ";
             })
             ->rawColumns(['status', 'action'])
@@ -125,7 +121,6 @@ class CashierController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $cashier->id,
-            'password' => 'nullable|string|min:6|confirmed',
             'status' => 'boolean',
         ]);
 
@@ -134,16 +129,32 @@ class CashierController extends Controller
                 'name' => $request->name,
                 'username' => $request->username,
                 'status' => $request->boolean('status'),
-                ...(!empty($request->password) ? ['password' => $request->password] : []),
             ]);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'cashier berhasil diperbarui.',
                 'redirect' => route('cashiers.show', $cashier->username),
-                'redirect_type' => 'http',
+                'redirect_type' => 'spa',
             ]);
         });
+    }
+
+    /**
+     * Reset the specified resource's password.
+     */
+    public function resetPassword(User $cashier)
+    {
+        $cashier->update([
+            'password' => '12345678',
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password kasir berhasil direset ke "12345678".',
+            'redirect' => route('cashiers.show', $cashier->username),
+            'redirect_type' => 'spa',
+        ]);
     }
 
     /**
