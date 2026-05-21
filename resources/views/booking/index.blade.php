@@ -32,16 +32,16 @@
                                 $sortedSchedules = $movieSchedules->sortBy('start_time');
                             @endphp
 
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <div class="card custom-card border shadow-sm shadow-hover">
                                     <div class="row g-0">
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <img src="{{ $movie->poster }}" class="img-fluid rounded-start" alt="{{ $movie->title }} Poster">
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-10">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-start">
-                                                    <h5 class="card-title mb-0">
+                                                    <h5 class="card-title fs-4 text-primary mb-0">
                                                         {{ $movie->title }}
                                                     </h5>
 
@@ -54,26 +54,79 @@
                                                     <i class="bi bi-clock me-1"></i> {{ $movie->duration }}
                                                 </small>
 
-                                                <p class="card-text mt-2 mb-1">
+                                                <p class="card-text mt-3 mb-1">
                                                     <strong>Jadwal Tayang:</strong>
                                                 </p>
 
-                                                <div class="list-group">
+                                                <div class="d-flex flex-wrap gap-3 mb-3">
                                                     @foreach ($sortedSchedules as $sch)
-                                                        <a href="{{ route('booking.show', $sch->uuid) }}"
-                                                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center spa-link">
-                                                            <div>
-                                                                <div class="badge text-bg-secondary">
-                                                                    {{ $sch->studio->name }}
+                                                        <a href="{{ route('booking.show', $sch->uuid) }}" class="text-decoration-none spa-link">
+                                                            <div class="card custom-card border">
+                                                                <div class="card-body">
+                                                                    <div class="d-flex align-items-center gap-3">
+                                                                        {{-- Icon --}}
+                                                                        <div class="bg-info-gradient text-white rounded-circle py-2 px-3">
+                                                                            <i class="bi bi-camera-reels fs-4"></i>
+                                                                        </div>
+
+                                                                        {{-- Info --}}
+                                                                        <div>
+                                                                            <h5 class="fw-bold text-dark mb-0">
+                                                                                {{ $sch->studio->name }}
+                                                                            </h5>
+
+                                                                            <small class="small text-muted mb-0">
+                                                                                Kapasitas: {{ $sch->studio->capacity }} Kursi
+                                                                            </small>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <hr>
+
+                                                                    <div class="d-flex align-items-center justify-content-between">
+                                                                        <span class="fw-semibold text-muted fs-6">
+                                                                            {{ substr($sch->start_time, 0, 5) }}
+                                                                        </span>
+
+                                                                        <div class="badge text-bg-secondary rounded-circle py-2 px-2">
+                                                                            <i class="fa fa-arrow-right"></i>
+                                                                        </div>
+
+                                                                        <span class="fw-semibold text-muted fs-6">
+                                                                            {{ substr($sch->end_time, 0, 5) }}
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                                {{ substr($sch->start_time, 0, 5) }} - {{ substr($sch->end_time, 0, 5) }}
+                                                                <div class="card-footer bg-light-gradient">
+                                                                    <h4 class="mb-0 fw-bold text-success">
+                                                                        {{ formatPrice($sch->price) }}
+                                                                    </h4>
+                                                                </div>
                                                             </div>
-                                                            <h6 class="fw-bold text-primary">
-                                                                {{ formatPrice($sch->price) }}
-                                                            </h6>
                                                         </a>
                                                     @endforeach
                                                 </div>
+
+                                                {{-- <div class="list-group">
+                                                    @foreach ($sortedSchedules as $sch)
+                                                        <a href="{{ route('booking.show', $sch->uuid) }}" class="list-group-item list-group-item-action spa-link">
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                <div>
+                                                                    <span class="fs-6 fw-bold">
+                                                                        {{ $sch->studio->name }}
+                                                                    </span>
+                                                                    |
+                                                                    <small class="badge text-bg-secondary">
+                                                                        {{ substr($sch->start_time, 0, 5) }} - {{ substr($sch->end_time, 0, 5) }}
+                                                                    </small>
+                                                                </div>
+                                                                <h6 class="fs-6 fw-bold text-primary">
+                                                                    {{ formatPrice($sch->price) }}
+                                                                </h6>
+                                                            </div>
+                                                        </a>
+                                                    @endforeach
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
