@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
@@ -33,11 +34,17 @@ Route::middleware('auth')->group(function () {
         Route::put('/{user}', 'update')->name('profile.update');
     });
 
+    // Password Routes
+    Route::controller(PasswordController::class)->prefix('password')->group(function () {
+        Route::get('/', 'edit')->name('password.edit');
+        Route::put('/', 'update')->name('password.update');
+        Route::post('/reset', 'reset')->name('password.reset');
+    });
+
     // Admin Routes
     Route::middleware('role:admin')->group(function () {
         // Cashiers Routes
         Route::get('/cashiers/data', [CashierController::class, 'data'])->name('cashiers.data');
-        Route::post('/cashiers/{cashier}/reset-password', [CashierController::class, 'resetPassword'])->name('cashiers.reset-password');
         Route::resource('cashiers', CashierController::class)->except('edit');
 
         // Movies Routes

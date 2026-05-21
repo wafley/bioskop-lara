@@ -69,6 +69,10 @@
                             <i class="fa fa-user me-1"></i>
                             Profil Saya
                         </a>
+                        <a class="dropdown-item spa-link" href="{{ route('password.edit') }}">
+                            <i class="fa fa-key me-1"></i>
+                            Ganti Password
+                        </a>
                         <a class="dropdown-item spa-link" href="{{ route('settings.index') }}">
                             <i class="fa fa-cog me-1"></i>
                             Pengaturan

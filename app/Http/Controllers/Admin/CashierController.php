@@ -141,23 +141,6 @@ class CashierController extends Controller
     }
 
     /**
-     * Reset the specified resource's password.
-     */
-    public function resetPassword(User $cashier)
-    {
-        $cashier->update([
-            'password' => '12345678',
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Password kasir berhasil direset ke "12345678".',
-            'redirect' => route('cashiers.show', $cashier->username),
-            'redirect_type' => 'spa',
-        ]);
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $cashier)
