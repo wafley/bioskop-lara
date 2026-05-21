@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     // Profile Routes
     Route::controller(ProfileController::class)->prefix('profile')->group(function () {
         Route::get('/', 'index')->name('profile.index');
-        Route::put('/', 'update')->name('profile.update');
+        Route::put('/{user}', 'update')->name('profile.update');
     });
 
     // Admin Routes
