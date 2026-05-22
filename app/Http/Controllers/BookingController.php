@@ -12,7 +12,6 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $today = now()->toDateString();
-        $search = $request->search;
 
         $schedules = Schedule::with(['movie', 'studio'])
             ->where('show_date', $today)
