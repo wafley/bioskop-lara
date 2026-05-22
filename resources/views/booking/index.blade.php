@@ -88,9 +88,7 @@
                                                                             {{ substr($sch->start_time, 0, 5) }}
                                                                         </span>
 
-                                                                        <div class="badge text-bg-secondary rounded-circle py-2 px-2">
-                                                                            <i class="fa fa-arrow-right"></i>
-                                                                        </div>
+                                                                        <i class="fa fa-arrow-right"></i>
 
                                                                         <span class="fw-semibold text-muted fs-6">
                                                                             {{ substr($sch->end_time, 0, 5) }}
