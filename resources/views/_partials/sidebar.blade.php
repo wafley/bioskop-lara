@@ -120,6 +120,17 @@
                 @endrole
 
                 <!-- Start::slide -->
+                <li class="slide">
+                    <a href="{{ route('transactions.index') }}" class="side-menu__item {{ isActive('transactions.index') }} spa-link">
+                        <span class="side-menu__icon">
+                            <i class='mdi mdi-cash-multiple fs-4'></i>
+                        </span>
+                        <span class="side-menu__label">Data Transaksi</span>
+                    </a>
+                </li>
+                <!-- End::slide -->
+
+                <!-- Start::slide -->
                 <li class="slide has-sub {{ isOpen(['profile.*', 'password.*', 'config.*']) }}">
                     <a href="javascript:void(0);" class="side-menu__item {{ isParentActive(['profile.*', 'password.*', 'config.*']) }}">
                         <span class="side-menu__icon">
