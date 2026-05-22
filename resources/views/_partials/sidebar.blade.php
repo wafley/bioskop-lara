@@ -59,24 +59,26 @@
                 <!-- End::slide -->
 
                 <!-- Start::slide -->
-                <li class="slide">
-                    <a href="{{ route('movies.index') }}" class="side-menu__item {{ isActive('movies.*') }} spa-link">
+                <li class="slide has-sub {{ isOpen(['profile.*', 'password.*', 'config.*']) }}">
+                    <a href="javascript:void(0);" class="side-menu__item {{ isParentActive(['profile.*', 'password.*', 'config.*']) }}">
                         <span class="side-menu__icon">
-                            <i class='fe fe-film'></i>
+                            <i class="fe fe-database"></i>
                         </span>
-                        <span class="side-menu__label">Film</span>
+                        <span class="side-menu__label">Data Master</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
                     </a>
-                </li>
-                <!-- End::slide -->
 
-                <!-- Start::slide -->
-                <li class="slide">
-                    <a href="{{ route('studios.index') }}" class="side-menu__item {{ isActive('studios.*') }} spa-link">
-                        <span class="side-menu__icon">
-                            <i class='fe fe-airplay'></i>
-                        </span>
-                        <span class="side-menu__label">Studio</span>
-                    </a>
+                    <ul class="slide-menu child1">
+                        <li class="slide">
+                            <a href="{{ route('movies.index') }}" class="side-menu__item {{ isActive('movies.*') }} spa-link">
+                                Film
+                            </a>
+
+                            <a href="{{ route('studios.index') }}" class="side-menu__item {{ isActive('studios.*') }} spa-link">
+                                Studio
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <!-- End::slide -->
 
