@@ -27,7 +27,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * 
+     * Displays transaction data for DataTables.
      */
     public function data(Request $request)
     {
