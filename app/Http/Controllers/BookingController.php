@@ -31,7 +31,15 @@ class BookingController extends Controller
 
     public function show(Request $request, Schedule $schedule)
     {
+
         $schedule->load(['movie', 'studio']);
+
+        $title = sprintf(
+            '%s (%s - %s)',
+            $schedule->movie->title,
+            substr($schedule->start_time, 0, 5),
+            substr($schedule->end_time, 0, 5)
+        );
 
         $seats = $schedule->studio->seats->groupBy('row');
 
@@ -41,6 +49,7 @@ class BookingController extends Controller
             ->toArray();
 
         return spaRender($request, 'booking.show', [
+            'title'         => $title,
             'schedule'      => $schedule,
             'seats'         => $seats,
             'bookedSeatIds' => $bookedSeatIds,

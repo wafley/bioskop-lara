@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', $schedule->movie->title . ' (' . substr($schedule->start_time, 0, 5) . ' - ' . substr($schedule->end_time, 0, 5) . ')')
+@section('title', $title)
 
 @section('breadcrumb')
     @include('_partials.breadcrumb')
