@@ -100,7 +100,7 @@ if (!function_exists('generateInvoiceNumber')) {
                 ->value('invoice_number');
 
             $lastNumber = $latestInvoice
-                ? (int) str($latestInvoice)->after($prefix)
+                ? (int) str($latestInvoice)->after($prefix)->toString()
                 : 0;
 
             return $prefix . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
