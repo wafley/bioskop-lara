@@ -75,15 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('booking')->name('booking.')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('index');
             Route::get('/{schedule}', [BookingController::class, 'show'])->name('show');
-        });
-
-        // Transactions Routes
-        Route::prefix('transactions')->name('transactions.')->group(function () {
-            Route::post('/', [TransactionController::class, 'store'])->name('store');
-
-            Route::get('/{transaction:invoice_number}/print', [TransactionController::class, 'print'])->name('print');
-            Route::get('/print/{transaction:invoice_number}/receipt', [TransactionController::class, 'printReceipt'])->name('print.receipt');
-            Route::get('/print/{transaction:invoice_number}/ticket', [TransactionController::class, 'printTicket'])->name('print.ticket');
+            Route::post('/', [BookingController::class, 'store'])->name('store');
         });
     });
 
@@ -101,6 +93,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/data', [TransactionController::class, 'data'])->name('data');
             Route::get('/', [TransactionController::class, 'index'])->name('index');
             Route::get('/{transaction}', [TransactionController::class, 'show'])->name('show');
+
+            Route::get('/{transaction:invoice_number}/print', [TransactionController::class, 'print'])->name('print');
+            Route::get('/print/{transaction:invoice_number}/receipt', [TransactionController::class, 'printReceipt'])->name('print.receipt');
+            Route::get('/print/{transaction:invoice_number}/ticket', [TransactionController::class, 'printTicket'])->name('print.ticket');
         });
     });
 

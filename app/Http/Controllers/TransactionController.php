@@ -5,19 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Services\BookingService;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    protected BookingService $bookingService;
-
-    public function __construct(BookingService $bookingService)
-    {
-        $this->bookingService = $bookingService;
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -76,36 +68,6 @@ class TransactionController extends Controller
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
-    }
-
-    /**
-     * Process order requests from the POS cashier page.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'schedule_id'    => 'required|exists:schedules,id',
-            'seat_ids'       => 'required|array|min:1',
-            'seat_ids.*'     => 'exists:studio_seats,id',
-            'payment_method' => 'required|in:cash,transfer',
-            'amount_paid'    => 'required_if:payment_method,cash|nullable|numeric|min:0',
-        ]);
-
-        try {
-            $transaction = $this->bookingService->createBooking($validated);
-
-            return response()->json([
-                'status'        => 'success',
-                'message'       => 'Transaksi berhasil diproses!',
-                'redirect'      => route('transactions.print', $transaction->invoice_number),
-                'redirect_type' => 'http'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage()
-            ], 422);
-        }
     }
 
     /**

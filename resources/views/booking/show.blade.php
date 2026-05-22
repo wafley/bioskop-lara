@@ -93,7 +93,7 @@
         </div>
 
         <div class="col-4">
-            <form action="{{ route('transactions.store') }}" method="POST" data-ajax="true">
+            <form action="{{ route('booking.store') }}" method="POST" data-ajax="true">
                 @csrf
                 @method('POST')
 
