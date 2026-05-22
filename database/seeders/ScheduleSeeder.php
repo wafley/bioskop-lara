@@ -89,7 +89,7 @@ class ScheduleSeeder extends Seeder
                     $weekdayPrice = (int) SettingHelper::get('weekday_prices', 40000);
                     $fridayPrice  = (int) SettingHelper::get('friday_prices', 50000);
                     $weekendPrice = (int) SettingHelper::get('weekend_prices', 65000);
-                    $vipSurcharge = (int) SettingHelper::get('vip_surcharge', 35000);
+                    $vipSurcharge = (int) SettingHelper::get('vip_surcharge', 10000);
 
                     $priceBase = match (true) {
                         $showDate->isFriday() => $fridayPrice,
