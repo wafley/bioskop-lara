@@ -7,9 +7,10 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
-use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
@@ -28,17 +29,26 @@ Route::middleware('auth')->group(function () {
     // Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    // Profile Routes
-    Route::controller(ProfileController::class)->prefix('profile')->group(function () {
-        Route::get('/', 'index')->name('profile.index');
-        Route::put('/{user}', 'update')->name('profile.update');
-    });
+    // Settings Routes
+    Route::prefix('settings')->group(function () {
+        // Profile Routes
+        Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+            Route::get('/', 'index')->name('profile.index');
+            Route::put('/{user}', 'update')->name('profile.update');
+        });
 
-    // Password Routes
-    Route::controller(PasswordController::class)->prefix('password')->group(function () {
-        Route::get('/', 'edit')->name('password.edit');
-        Route::put('/', 'update')->name('password.update');
-        Route::post('/reset', 'reset')->name('password.reset');
+        // Password Routes
+        Route::controller(PasswordController::class)->prefix('password')->group(function () {
+            Route::get('/', 'edit')->name('password.edit');
+            Route::put('/', 'update')->name('password.update');
+            Route::post('/reset', 'reset')->name('password.reset');
+        });
+
+        // Configs Routes
+        Route::middleware('role:admin')->controller(ConfigController::class)->prefix('config')->group(function () {
+            Route::get('/', 'index')->name('config.index');
+            Route::put('/', 'update')->name('config.update');
+        });
     });
 
     // Admin Routes
@@ -57,10 +67,6 @@ Route::middleware('auth')->group(function () {
 
         // Schedule Routes
         Route::resource('schedules', ScheduleController::class);
-
-        // Settings Routes
-        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     });
 
     // Cashier Routes
