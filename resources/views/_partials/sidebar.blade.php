@@ -23,6 +23,28 @@
                     {
                         return request()->routeIs($route) ? 'active' : '';
                     }
+
+                    function isOpen($routes)
+                    {
+                        foreach ((array) $routes as $route) {
+                            if (request()->routeIs($route)) {
+                                return 'open';
+                            }
+                        }
+
+                        return '';
+                    }
+
+                    function isParentActive($routes)
+                    {
+                        foreach ((array) $routes as $route) {
+                            if (request()->routeIs($route)) {
+                                return 'active';
+                            }
+                        }
+
+                        return '';
+                    }
                 @endphp
 
                 <!-- Start::slide -->
@@ -80,17 +102,6 @@
                         </a>
                     </li>
                     <!-- End::slide -->
-
-                    <!-- Start::slide -->
-                    <li class="slide">
-                        <a href="{{ route('settings.index') }}" class="side-menu__item {{ isActive('settings.index') }} spa-link">
-                            <span class="side-menu__icon">
-                                <i class='fe fe-settings'></i>
-                            </span>
-                            <span class="side-menu__label">Pengaturan</span>
-                        </a>
-                    </li>
-                    <!-- End::slide -->
                 @endrole
 
                 @role('cashier')
@@ -106,6 +117,39 @@
                     <!-- End::slide -->
                 @endrole
 
+                <!-- Start::slide -->
+                <li class="slide has-sub {{ isOpen(['profile.*', 'password.*', 'config.*']) }}">
+                    <a href="javascript:void(0);" class="side-menu__item {{ isParentActive(['profile.*', 'password.*', 'config.*']) }}">
+                        <span class="side-menu__icon">
+                            <i class="fe fe-settings"></i>
+                        </span>
+                        <span class="side-menu__label">Pengaturan</span>
+                        <i class="fe fe-chevron-right side-menu__angle"></i>
+                    </a>
+
+                    <ul class="slide-menu child1">
+                        <li class="slide">
+                            <a href="{{ route('profile.index') }}" class="side-menu__item {{ isActive('profile.index') }} spa-link">
+                                Profil Saya
+                            </a>
+                        </li>
+
+                        <li class="slide">
+                            <a href="{{ route('password.edit') }}" class="side-menu__item {{ isActive('password.edit') }} spa-link">
+                                Ganti Password
+                            </a>
+                        </li>
+
+                        @role('admin')
+                            <li class="slide">
+                                <a href="{{ route('config.index') }}" class="side-menu__item {{ isActive('config.index') }} spa-link">
+                                    Konfigurasi Aplikasi
+                                </a>
+                            </li>
+                        @endrole
+                    </ul>
+                </li>
+                <!-- End::slide -->
             </ul>
 
             <div class="slide-right" id="slide-right">

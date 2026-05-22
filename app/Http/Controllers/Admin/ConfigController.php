@@ -18,7 +18,7 @@ class ConfigController extends Controller
             'settings' => $settings,
         ];
 
-        return spaRender($request, 'settings.index', $data);
+        return spaRender($request, 'config.index', $data);
     }
 
     public function update(Request $request)
@@ -40,7 +40,7 @@ class ConfigController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Pengaturan berhasil diperbarui.',
-            'redirect' => route('settings.index'),
+            'redirect' => route('config.index'),
             'redirect_type' => 'spa',
         ]);
     }

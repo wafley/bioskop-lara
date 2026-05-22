@@ -73,10 +73,12 @@
                             <i class="fa fa-key me-1"></i>
                             Ganti Password
                         </a>
-                        <a class="dropdown-item spa-link" href="{{ route('settings.index') }}">
-                            <i class="fa fa-cog me-1"></i>
-                            Pengaturan
-                        </a>
+                        @role('admin')
+                            <a class="dropdown-item spa-link" href="{{ route('config.index') }}">
+                                <i class="fa fa-cog me-1"></i>
+                                Konfigurasi Aplikasi
+                            </a>
+                        @endrole
                         <a class="dropdown-item text-danger" href="#!" id="logout-btn">
                             <i class="fa fa-sign-out-alt me-1"></i>
                             Keluar

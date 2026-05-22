@@ -29,7 +29,7 @@ function ajaxRequest({
             return showToast(
                 "error",
                 errors || "Data yang dimasukkan tidak valid",
-                5000
+                5000,
             );
         }
 
@@ -43,7 +43,7 @@ function ajaxRequest({
         showToast(
             "error",
             responseJSON?.message || "Terjadi kesalahan, coba lagi.",
-            5000
+            5000,
         );
     };
 
@@ -133,23 +133,50 @@ function ajaxRequest({
 
 // Active sidebar link handler
 function setSidebarLink(url) {
-    $(layout.sidebarLink).removeClass("active");
-    $(layout.sidebarParent).removeClass("open active");
+    const currentPath = new URL(url, window.location.origin).pathname.replace(
+        /\/+$/,
+        "",
+    );
 
-    $(layout.sidebarLink).each(function () {
+    // reset all sidebar states
+    $(".side-menu__item").removeClass("active");
+    $(".slide").removeClass("open");
+    $(".slide.has-sub").removeClass("open");
+    $(".slide-menu").removeAttr("style");
+
+    $(".side-menu__item.spa-link").each(function () {
         const href = $(this).attr("href");
+
         if (!href || href === "#") return;
 
-        if (url.startsWith(href)) {
+        const linkPath = new URL(href, window.location.origin).pathname.replace(
+            /\/+$/,
+            "",
+        );
+
+        const isActive =
+            currentPath === linkPath || currentPath.startsWith(linkPath + "/");
+
+        if (isActive) {
+            // active current menu
             $(this).addClass("active");
 
-            $(this)
-                .parents(layout.sidebarParent)
-                .each(function () {
-                    if ($(this).attr("data-settled") === "true") {
-                        $(this).addClass("open active");
-                    }
-                });
+            // current li
+            const currentSlide = $(this).closest(".slide");
+
+            // if inside submenu
+            const parentSub = $(this).closest(".has-sub");
+
+            if (parentSub.length) {
+                // parent li open
+                parentSub.addClass("open");
+
+                // parent anchor active
+                parentSub.children(".side-menu__item").addClass("active");
+
+                // show submenu
+                parentSub.children(".slide-menu").css("display", "block");
+            }
         }
     });
 }
@@ -208,7 +235,7 @@ function loadPage(url) {
             }
 
             $(layout.content).html(
-                '<h4 class="text-danger">Gagal memuat halaman.</h4>'
+                '<h4 class="text-danger">Gagal memuat halaman.</h4>',
             );
         },
         onComplete: () => {

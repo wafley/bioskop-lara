@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('settings.update') }}" method="POST" data-ajax="true">
+    <form action="{{ route('config.update') }}" method="POST" data-ajax="true">
         @csrf
         @method('PUT')
 
