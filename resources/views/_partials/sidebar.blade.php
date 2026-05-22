@@ -123,9 +123,9 @@
                 <li class="slide">
                     <a href="{{ route('transactions.index') }}" class="side-menu__item {{ isActive('transactions.*') }} spa-link">
                         <span class="side-menu__icon">
-                            <i class='mdi mdi-cash-multiple fs-4'></i>
+                            <i class='mdi mdi-credit-card-fast-outline fs-4'></i>
                         </span>
-                        <span class="side-menu__label">Data Transaksi</span>
+                        <span class="side-menu__label">Transaksi</span>
                     </a>
                 </li>
                 <!-- End::slide -->
