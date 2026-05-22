@@ -7,11 +7,11 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\ScheduleController;
-use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -75,6 +75,14 @@ Route::middleware('auth')->group(function () {
         Route::prefix('booking')->name('booking.')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('index');
             Route::get('/{schedule}', [BookingController::class, 'show'])->name('show');
+        });
+
+        // Transactions Routes
+        Route::prefix('transactions')->name('transactions.')->group(function () {
+            Route::post('/', [TransactionController::class, 'store'])->name('store');
+            Route::get('/{transaction:invoice_number}/print', [TransactionController::class, 'print'])->name('print');
+            Route::get('/print/{transaction:invoice_number}/receipt', [TransactionController::class, 'printReceipt'])->name('print.receipt');
+            Route::get('/print/{transaction:invoice_number}/ticket', [TransactionController::class, 'printTicket'])->name('print.ticket');
         });
     });
 

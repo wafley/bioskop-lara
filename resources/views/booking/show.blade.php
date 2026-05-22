@@ -93,7 +93,7 @@
         </div>
 
         <div class="col-4">
-            <form action="" method="POST" data-ajax="true">
+            <form action="{{ route('transactions.store') }}" method="POST" data-ajax="true">
                 @csrf
                 @method('POST')
 
@@ -101,7 +101,7 @@
                     <div class="card-header">
                         <h4 class="card-title">Informasi Pemesanan</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pb-0">
                         <div class="d-flex justify-content-between mb-3">
                             <span>Film:</span>
                             <span>{{ $schedule->movie->title }}</span>
@@ -133,7 +133,7 @@
                             </select>
                         </div>
 
-                        <div id="cash-payment-wrapper">
+                        <div id="cash-payment-wrapper" class="mb-3">
                             <label for="amount_paid" class="form-label">Nominal Uang Diterima</label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp</span>
@@ -157,18 +157,20 @@
 @section('scripts')
     <script data-partial="1">
         $(document).ready(function() {
-            // State: Menyimpan daftar kursi yang dipilih
+            // State holding elected seats
             let selectedSeats = [];
 
-            // Caching DOM elements
+            // DOM caching selector
             const $seats = $('.seat-item');
             const $listDisplay = $('#selected-seats-list');
             const $totalDisplay = $('#total-price');
             const $hiddenContainer = $('#hidden-inputs-container');
             const $amountPaid = $('#amount_paid');
             const $changeLabel = $('#change-amount-label');
+            const $paymentMethod = $('#payment_method');
+            const $cashWrapper = $('#cash-payment-wrapper');
 
-            // Helper: Format Rupiah
+            // Rupiah formatter
             const formatRupiah = (number) => {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -177,11 +179,11 @@
                 }).format(number);
             };
 
-            // Event: Klik Kursi
+            // Event: Select Seat
             $seats.on('click', function() {
                 const $btn = $(this);
 
-                // Toggle state visual
+                // Change the appearance of the button (from outline to solid or vice versa)
                 $btn.toggleClass('active btn-primary');
 
                 const seatData = {
@@ -190,7 +192,6 @@
                     price: parseInt($btn.data('seat-price'))
                 };
 
-                // Update Array State
                 if ($btn.hasClass('active')) {
                     selectedSeats.push(seatData);
                 } else {
@@ -200,14 +201,26 @@
                 updateUI();
             });
 
-            // Event: Perubahan nominal pembayaran
+            // Event: Interaction Toggle Payment Method Options
+            $paymentMethod.on('change', function() {
+                if ($(this).val() === 'transfer') {
+                    $cashWrapper.slideUp(200);
+                    $amountPaid.prop('required', false).val('');
+                } else {
+                    $cashWrapper.slideDown(200);
+                    $amountPaid.prop('required', true);
+                }
+                updateUI();
+            });
+
+            // Event: Input the nominal amount of cash received
             $amountPaid.on('input', function() {
                 calculateChange();
             });
 
-            // Function: Update UI (List Kursi, Total, Hidden Inputs)
+            // State Data Synchronization with Form UI
             function updateUI() {
-                // 1. Update List Kode Kursi
+                // 1. Selected Seat Badge Render
                 if (selectedSeats.length > 0) {
                     const codes = selectedSeats.map(s => `<span class="badge bg-secondary me-1">${s.code}</span>`).join('');
                     $listDisplay.html(codes);
@@ -215,27 +228,30 @@
                     $listDisplay.text('Belum memilih kursi');
                 }
 
-                // 2. Update Total Harga
+                // 2. Calculate Total Payment
                 const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
                 $totalDisplay.text(formatRupiah(total));
 
-                // 3. Regenerate Hidden Inputs
+                // 3. Rebuild Hidden Input to send to Backend via data-ajax="true"
                 $hiddenContainer.empty();
                 selectedSeats.forEach(seat => {
                     $hiddenContainer.append(`<input type="hidden" name="seat_ids[]" value="${seat.id}">`);
                 });
 
-                // Tambahkan hidden input untuk total jika diperlukan backend
-                $hiddenContainer.append(`<input type="hidden" name="total_price" value="${total}">`);
-
-                // 4. Update Kembalian
+                // 4. Update Return Label
                 calculateChange(total);
             }
 
-            // Function: Hitung Kembalian
+            // Calculate the cashier's remaining change
             function calculateChange(totalPrice = null) {
-                // Jika totalPrice tidak dikirim, hitung ulang dari array
                 const total = totalPrice ?? selectedSeats.reduce((sum, s) => sum + s.price, 0);
+                const isCash = $paymentMethod.val() === 'cash';
+
+                if (!isCash) {
+                    $changeLabel.text('Kembalian: Rp 0').removeClass('text-danger text-success');
+                    return;
+                }
+
                 const paid = parseInt($amountPaid.val()) || 0;
                 const change = paid - total;
 
@@ -244,8 +260,7 @@
                     $changeLabel.toggleClass('text-danger', change < 0);
                     $changeLabel.toggleClass('text-success', change >= 0);
                 } else {
-                    $changeLabel.text('Kembalian: Rp 0');
-                    $changeLabel.removeClass('text-danger text-success');
+                    $changeLabel.text('Kembalian: Rp 0').removeClass('text-danger text-success');
                 }
             }
         });
