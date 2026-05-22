@@ -51,7 +51,7 @@
                 <li class="slide">
                     <a href="{{ route('dashboard.index') }}" class="side-menu__item {{ isActive('dashboard.index') }} spa-link">
                         <span class="side-menu__icon">
-                            <i class='fe fe-grid'></i>
+                            <i class='mdi mdi-view-dashboard-outline fs-4'></i>
                         </span>
                         <span class="side-menu__label">Dashboard</span>
                     </a>
@@ -62,7 +62,7 @@
                 <li class="slide has-sub {{ isOpen(['profile.*', 'password.*', 'config.*']) }}">
                     <a href="javascript:void(0);" class="side-menu__item {{ isParentActive(['profile.*', 'password.*', 'config.*']) }}">
                         <span class="side-menu__icon">
-                            <i class="fe fe-database"></i>
+                            <i class="mdi mdi-database-outline fs-4"></i>
                         </span>
                         <span class="side-menu__label">Data Master</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
@@ -87,7 +87,7 @@
                     <li class="slide">
                         <a href="{{ route('cashiers.index') }}" class="side-menu__item {{ isActive('cashiers.*') }} spa-link">
                             <span class="side-menu__icon">
-                                <i class='fe fe-users'></i>
+                                <i class='mdi mdi-account-cash-outline fs-4'></i>
                             </span>
                             <span class="side-menu__label">Data Kasir</span>
                         </a>
@@ -98,7 +98,7 @@
                     <li class="slide">
                         <a href="{{ route('schedules.index') }}" class="side-menu__item {{ isActive('schedules.*') }} spa-link">
                             <span class="side-menu__icon">
-                                <i class='fe fe-calendar'></i>
+                                <i class='mdi mdi-calendar-text fs-4'></i>
                             </span>
                             <span class="side-menu__label">Jadwal Tayang</span>
                         </a>
@@ -111,9 +111,9 @@
                     <li class="slide">
                         <a href="{{ route('booking.index') }}" class="side-menu__item {{ isActive('booking.*') }} spa-link">
                             <span class="side-menu__icon">
-                                <i class='fe fe-tag'></i>
+                                <i class='mdi mdi-ticket-confirmation-outline fs-4'></i>
                             </span>
-                            <span class="side-menu__label">Pesan Tiket</span>
+                            <span class="side-menu__label">Pemesanan Tiket</span>
                         </a>
                     </li>
                     <!-- End::slide -->
@@ -123,7 +123,7 @@
                 <li class="slide has-sub {{ isOpen(['profile.*', 'password.*', 'config.*']) }}">
                     <a href="javascript:void(0);" class="side-menu__item {{ isParentActive(['profile.*', 'password.*', 'config.*']) }}">
                         <span class="side-menu__icon">
-                            <i class="fe fe-settings"></i>
+                            <i class="mdi mdi-cog-outline fs-4"></i>
                         </span>
                         <span class="side-menu__label">Pengaturan</span>
                         <i class="fe fe-chevron-right side-menu__angle"></i>
