@@ -76,11 +76,13 @@ if (!function_exists('formatDate')) {
 if (!function_exists('generateUniqueId')) {
     function generateUniqueId(?int $length = null): string
     {
-        $id = str_replace('-', '', (string) Str::ulid());
+        $id = str_replace('-', '', (string) Str::uuid());
 
-        return $length
-            ? substr($id, 0, $length)
-            : $id;
+        if ($length) {
+            return strtoupper(Str::random($length));
+        }
+
+        return strtoupper($id);
     }
 }
 
