@@ -35,7 +35,6 @@
             bottom: -15px;
         }
 
-        /* Tambahan CSS untuk List Mini Tiket */
         .mini-ticket {
             border-radius: 10px;
             overflow: hidden;
@@ -149,7 +148,6 @@
                         @foreach ($transaction->tickets as $ticket)
                             @php
                                 $isVip = $ticket->seat->type === 'vip';
-                                // Mengatur warna Stub (potongan tiket kiri) berdasarkan tipe kursi
                                 $stubBg = $isVip ? 'bg-warning text-dark' : 'bg-primary text-white';
                                 $badgeBg = $isVip ? 'bg-dark text-warning' : 'bg-white text-primary';
                             @endphp
