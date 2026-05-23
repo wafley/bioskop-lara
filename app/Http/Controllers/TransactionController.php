@@ -71,6 +71,19 @@ class TransactionController extends Controller
     }
 
     /**
+     * Display a details page for the given transaction resource in storage.
+     */
+    public function show(Request $request, Transaction $transaction)
+    {
+        $transaction->load(['cashier', 'schedule.movie', 'schedule.studio', 'tickets.seat']);
+
+        return spaRender($request, 'transactions.show', [
+            'transaction' => $transaction,
+            'title'       => 'Detail Transaksi #' . $transaction->invoice_number,
+        ]);
+    }
+
+    /**
      * Hub Page / Print Options
      */
     public function print(Transaction $transaction)
