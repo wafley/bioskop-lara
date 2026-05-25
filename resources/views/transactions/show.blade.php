@@ -111,8 +111,8 @@
                         </div>
 
                         <div class="col-md-4 p-4 bg-light d-flex flex-column justify-content-center text-center position-relative">
-                            <div class="ticket-cutout-top"></div>
-                            <div class="ticket-cutout-bottom"></div>
+                            <div class="ticket-cutout-top bg-light"></div>
+                            <div class="ticket-cutout-bottom bg-light"></div>
 
                             <h5 class="fw-bold text-primary text-uppercase mb-1">
                                 <i class="bi bi-door-open-fill"></i> {{ $transaction->schedule->studio->name }}
@@ -143,7 +143,7 @@
                     </a>
                 </div>
 
-                <div class="card-body bg-light p-4">
+                <div class="card-body">
                     <div class="row g-3">
                         @foreach ($transaction->tickets as $ticket)
                             @php
