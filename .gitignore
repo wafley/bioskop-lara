@@ -23,3 +23,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# AI Agents / Local Tools Runtime
+.agents/
+skills-lock.json
