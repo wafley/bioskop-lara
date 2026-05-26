@@ -43,7 +43,7 @@ class Ticket extends Model
                 'icon' => 'bi-arrow-counterclockwise'
             ],
             default => (object) [
-                'text' => ucfirst($attributes['status']),
+                'text' => ucfirst($this->status),
                 'class' => 'light',
                 'icon' => 'bi-info-circle'
             ],
