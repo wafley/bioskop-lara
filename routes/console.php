@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('tickets:update-expired')->hourly();
+Schedule::command('movies:update-status')->everyMinute();

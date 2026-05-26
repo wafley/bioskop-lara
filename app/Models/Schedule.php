@@ -22,31 +22,23 @@ class Schedule extends Model
 
     public function getStatusLabelAttribute()
     {
-        $now = now();
-        $start = Carbon::parse($this->show_date . ' ' . $this->start_time);
-        $end = Carbon::parse($this->show_date . ' ' . $this->end_time);
-
-        if ($now->between($start, $end)) {
-            return (object) [
+        return match ($this->movie->status) {
+            'now_showing' => (object) [
                 'text' => 'Sedang Tayang',
                 'class' => 'warning',
                 'icon' => 'bi-play-fill'
-            ];
-        }
-
-        if ($now->gt($end)) {
-            return (object) [
+            ],
+            'ended' => (object) [
                 'text' => 'Selesai',
                 'class' => 'success',
                 'icon' => 'bi-check-circle'
-            ];
-        }
-
-        return (object) [
-            'text' => 'Segera Tayang',
-            'class' => 'secondary',
-            'icon' => 'bi-calendar-event'
-        ];
+            ],
+            default => (object) [
+                'text' => 'Segera Tayang',
+                'class' => 'secondary',
+                'icon' => 'bi-calendar-event'
+            ],
+        };
     }
 
     public function getRouteKeyName()
