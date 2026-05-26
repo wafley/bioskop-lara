@@ -18,7 +18,7 @@ class ConfigController extends Controller
             'settings' => $settings,
         ];
 
-        return spaRender($request, 'config.index', $data);
+        return spaRender($request, 'configs.index', $data);
     }
 
     public function update(Request $request)
