@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Observers\ActivityObserver;
 use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use App\Models\Schedule;
@@ -12,10 +13,12 @@ use App\Models\Movie;
 class ScheduleController extends Controller
 {
     protected ScheduleService $scheduleService;
+    protected ActivityObserver $activityObserver;
 
     public function __construct(ScheduleService $scheduleService)
     {
         $this->scheduleService = $scheduleService;
+        $this->activityObserver = new ActivityObserver();
     }
 
     /**
@@ -67,7 +70,20 @@ class ScheduleController extends Controller
         ]);
 
         try {
-            $this->scheduleService->createSchedule($validated);
+            $schedule = $this->scheduleService->createSchedule($validated);
+
+            $this->activityObserver->logCustom(
+                message: 'Jadwal baru ditambahkan',
+                event: 'created',
+                logName: 'schedules',
+                properties: [
+                    'schedule_id' => $schedule->id,
+                    'movie_id' => $schedule->movie_id,
+                    'studio_id' => $schedule->studio_id,
+                    'show_date' => $schedule->show_date,
+                    'start_time' => $schedule->start_time,
+                ],
+            );
 
             return response()->json([
                 'status'    => 'success',
@@ -132,6 +148,17 @@ class ScheduleController extends Controller
 
         try {
             $this->scheduleService->updateSchedule($schedule, $validated);
+
+            $this->activityObserver->logCustom(
+                message: 'Jadwal diperbarui',
+                event: 'updated',
+                logName: 'schedules',
+                properties: [
+                    'schedule_id' => $schedule->id,
+                    'changes' => $validated,
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Jadwal berhasil diperbarui.',
@@ -152,7 +179,15 @@ class ScheduleController extends Controller
     public function destroy(Schedule $schedule)
     {
         try {
+            $scheduleData = $schedule->toArray();
             $schedule->delete();
+
+            $this->activityObserver->logCustom(
+                message: 'Jadwal dihapus',
+                event: 'deleted',
+                logName: 'schedules',
+                properties: $scheduleData,
+            );
 
             return response()->json([
                 'status' => 'success',

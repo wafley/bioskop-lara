@@ -7,15 +7,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use App\Observers\ActivityObserver;
 use App\Http\Controllers\Controller;
 
 class CashierController extends Controller
 {
     protected Role $role;
+    protected ActivityObserver $activityObserver;
 
     public function __construct()
     {
         $this->role = Role::where('name', 'cashier')->firstOrFail();
+        $this->activityObserver = new ActivityObserver();
     }
 
     /**
@@ -70,13 +73,24 @@ class CashierController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        User::create([
+        $cashier = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'password' => $request->password,
             'role_id' => $this->role->id,
             'status' => true,
         ]);
+
+        $this->activityObserver->logCustom(
+            message: 'Kasir baru ditambahkan: ' . $cashier->name,
+            event: 'created',
+            logName: 'cashiers',
+            properties: [
+                'cashier_id' => $cashier->id,
+                'name' => $cashier->name,
+                'username' => $cashier->username,
+            ],
+        );
 
         return response()->json([
             'status' => 'success',
@@ -131,6 +145,18 @@ class CashierController extends Controller
                 'status' => $request->boolean('status'),
             ]);
 
+            $this->activityObserver->logCustom(
+                message: 'Kasir diperbarui: ' . $cashier->name,
+                event: 'updated',
+                logName: 'cashiers',
+                properties: [
+                    'cashier_id' => $cashier->id,
+                    'name' => $cashier->name,
+                    'username' => $cashier->username,
+                    'status' => $request->boolean('status'),
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'cashier berhasil diperbarui.',
@@ -145,7 +171,15 @@ class CashierController extends Controller
      */
     public function destroy(User $cashier)
     {
+        $cashierData = ['cashier_id' => $cashier->id, 'name' => $cashier->name, 'username' => $cashier->username];
         $cashier->delete();
+
+        $this->activityObserver->logCustom(
+            message: 'Kasir dihapus: ' . $cashierData['name'],
+            event: 'deleted',
+            logName: 'cashiers',
+            properties: $cashierData,
+        );
 
         return response()->json([
             'status' => 'success',

@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Studio;
 use Illuminate\Http\Request;
 use App\Services\StudioService;
+use App\Observers\ActivityObserver;
 use App\Http\Controllers\Controller;
 
 class StudioController extends Controller
 {
     protected StudioService $studioService;
+    protected ActivityObserver $activityObserver;
 
     public function __construct(StudioService $studioService)
     {
         $this->studioService = $studioService;
+        $this->activityObserver = new ActivityObserver();
     }
 
     /**
@@ -67,6 +70,16 @@ class StudioController extends Controller
     public function addVip(Studio $studio)
     {
         if ($this->studioService->generateVipSeats($studio)) {
+            $this->activityObserver->logCustom(
+                message: 'Kursi VIP di-generate untuk studio',
+                event: 'vip_generated',
+                logName: 'studios',
+                properties: [
+                    'studio_id' => $studio->id,
+                    'studio_name' => $studio->name,
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Kursi VIP berhasil di-generate!'
@@ -101,6 +114,18 @@ class StudioController extends Controller
         $generateVip = $request->has('generate_vip');
 
         if ($this->studioService->createStudio($validated, $generateVip)) {
+            $this->activityObserver->logCustom(
+                message: 'Studio baru ditambahkan',
+                event: 'created',
+                logName: 'studios',
+                properties: [
+                    'name' => $validated['name'],
+                    'rows' => $validated['rows'],
+                    'cols' => $validated['cols'],
+                    'generate_vip' => $generateVip,
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Studio berhasil ditambahkan!',
@@ -168,6 +193,16 @@ class StudioController extends Controller
         ]);
 
         if ($this->studioService->updateStudio($studio, $validated)) {
+            $this->activityObserver->logCustom(
+                message: 'Studio diperbarui',
+                event: 'updated',
+                logName: 'studios',
+                properties: [
+                    'studio_id' => $studio->id,
+                    'changes' => $validated,
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Studio berhasil diperbarui!',
@@ -187,7 +222,16 @@ class StudioController extends Controller
      */
     public function destroy(Studio $studio)
     {
+        $studioData = ['studio_id' => $studio->id, 'name' => $studio->name];
+
         if ($this->studioService->deleteStudio($studio)) {
+            $this->activityObserver->logCustom(
+                message: 'Studio dihapus',
+                event: 'deleted',
+                logName: 'studios',
+                properties: $studioData,
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Studio berhasil dihapus!',

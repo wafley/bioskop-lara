@@ -64,5 +64,14 @@ class UpdateMovieStatusCommand extends Command
         });
 
         $this->info("Updated {$updatedCount} movies status.");
+
+        if ($updatedCount > 0) {
+            (new \App\Observers\ActivityObserver())->logCustom(
+                message: "Cron: {$updatedCount} status film diperbarui",
+                event: 'cron_movies_status',
+                logName: 'system',
+                properties: ['updated_count' => $updatedCount],
+            );
+        }
     }
 }

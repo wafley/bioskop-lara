@@ -43,5 +43,14 @@ class UpdateExpiredTicketsCommand extends Command
             });
 
         $this->info("Updated {$count} expired tickets to 'used'.");
+
+        if ($count > 0) {
+            (new \App\Observers\ActivityObserver())->logCustom(
+                message: "Cron: {$count} tiket expired diperbarui ke 'used'",
+                event: 'cron_tickets_expired',
+                logName: 'system',
+                properties: ['updated_count' => $count],
+            );
+        }
     }
 }

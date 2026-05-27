@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Helpers\SettingHelper;
+use App\Observers\ActivityObserver;
 use App\Http\Controllers\Controller;
 
 class ConfigController extends Controller
@@ -36,6 +37,13 @@ class ConfigController extends Controller
         foreach ($validated as $key => $value) {
             SettingHelper::set($key, $value);
         }
+
+        (new ActivityObserver())->logCustom(
+            message: 'Pengaturan aplikasi diperbarui',
+            event: 'updated',
+            logName: 'config',
+            properties: ['changes' => array_keys($validated)],
+        );
 
         return response()->json([
             'status' => 'success',

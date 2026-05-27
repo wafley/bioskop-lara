@@ -6,15 +6,18 @@ use App\Models\Ticket;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Services\BookingService;
+use App\Observers\ActivityObserver;
 use App\Http\Controllers\Controller;
 
 class BookingController extends Controller
 {
     protected BookingService $bookingService;
+    protected ActivityObserver $activityObserver;
 
     public function __construct(BookingService $bookingService)
     {
         $this->bookingService = $bookingService;
+        $this->activityObserver = new ActivityObserver();
     }
 
     public function index(Request $request)
@@ -78,6 +81,20 @@ class BookingController extends Controller
 
         try {
             $transaction = $this->bookingService->createBooking($validated);
+
+            $this->activityObserver->logCustom(
+                message: 'Transaksi baru diproses',
+                event: 'booking_created',
+                logName: 'bookings',
+                properties: [
+                    'transaction_id' => $transaction->id,
+                    'invoice_number' => $transaction->invoice_number,
+                    'schedule_id' => $validated['schedule_id'],
+                    'total_tickets' => count($validated['seat_ids']),
+                    'payment_method' => $validated['payment_method'],
+                    'total_price' => $transaction->total_price,
+                ],
+            );
 
             return response()->json([
                 'status'        => 'success',

@@ -6,10 +6,18 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
+use App\Observers\ActivityObserver;
 use App\Http\Controllers\Controller;
 
 class MovieController extends Controller
 {
+    protected ActivityObserver $activityObserver;
+
+    public function __construct()
+    {
+        $this->activityObserver = new ActivityObserver();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -56,7 +64,7 @@ class MovieController extends Controller
             'poster' => 'required|file|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Movie::create([
+        $movie = Movie::create([
             'title' => $request->title,
             'description' => $request->description ?? null,
             'genre' => $request->genre,
@@ -67,6 +75,17 @@ class MovieController extends Controller
             'poster' => $request->file('poster'),
             'status' => 'coming_soon',
         ]);
+
+        $this->activityObserver->logCustom(
+            message: 'Film baru ditambahkan: ' . $request->title,
+            event: 'created',
+            logName: 'movies',
+            properties: [
+                'movie_id' => $movie->id,
+                'title' => $request->title,
+                'director' => $request->director,
+            ],
+        );
 
         return response()->json([
             'status' => 'success',
@@ -136,6 +155,17 @@ class MovieController extends Controller
 
             $movie->update($updateData);
 
+            $this->activityObserver->logCustom(
+                message: 'Film diperbarui: ' . $movie->title,
+                event: 'updated',
+                logName: 'movies',
+                properties: [
+                    'movie_id' => $movie->id,
+                    'title' => $movie->title,
+                    'changes' => array_keys($updateData),
+                ],
+            );
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Film berhasil diperbarui.',
@@ -150,7 +180,15 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
+        $movieData = ['movie_id' => $movie->id, 'title' => $movie->title];
         $movie->delete();
+
+        $this->activityObserver->logCustom(
+            message: 'Film dihapus: ' . $movieData['title'],
+            event: 'deleted',
+            logName: 'movies',
+            properties: $movieData,
+        );
 
         return response()->json([
             'status' => 'success',

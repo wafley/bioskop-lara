@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Observers\ActivityObserver;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -38,6 +39,17 @@ class ProfileController extends Controller
             $user->username = $validated['username'];
 
             $user->save();
+
+            (new ActivityObserver())->logCustom(
+                message: 'Profil diperbarui',
+                event: 'profile_updated',
+                logName: 'profile',
+                properties: [
+                    'user_id' => $user->id,
+                    'name' => $validated['name'],
+                    'username' => $validated['username'],
+                ],
+            );
 
             return response()->json([
                 'status' => 'success',
