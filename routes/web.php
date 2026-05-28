@@ -65,6 +65,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/studios/render-seats', [StudioController::class, 'renderSeats'])->name('studios.render');
         Route::post('/studios/{studio}/add-vip', [StudioController::class, 'addVip'])->name('studios.add-vip');
 
+        // Reports Route
+        Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+
         // Schedule Routes
         Route::resource('schedules', ScheduleController::class);
     });

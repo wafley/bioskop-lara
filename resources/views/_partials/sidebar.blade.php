@@ -104,6 +104,17 @@
                         </a>
                     </li>
                     <!-- End::slide -->
+
+                    <!-- Start::slide -->
+                    <li class="slide">
+                        <a href="{{ route('reports.index') }}" class="side-menu__item {{ isActive('reports.*') }} spa-link">
+                            <span class="side-menu__icon">
+                                <i class='mdi mdi-chart-bar fs-4'></i>
+                            </span>
+                            <span class="side-menu__label">Laporan & Statistik</span>
+                        </a>
+                    </li>
+                    <!-- End::slide -->
                 @endrole
 
                 @role('cashier')
