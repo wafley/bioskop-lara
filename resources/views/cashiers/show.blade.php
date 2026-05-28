@@ -30,7 +30,7 @@
                         </div>
 
                         <div class="d-flex align-items-center gap-3">
-                            <button type="button" id="btn-reset-password" class="btn btn-warning w-100" data-url="{{ route('cashiers.reset-password', $cashier->username) }}">
+                            <button type="button" id="btn-reset-password" class="btn btn-warning w-100" data-url="{{ route('password.reset') }}">
                                 <i class="bi bi-unlock-fill"></i> Reset Password
                             </button>
                             <button class="btn btn-danger w-100" data-ajax="delete" data-url="{{ route('cashiers.destroy', $cashier->username) }}">
