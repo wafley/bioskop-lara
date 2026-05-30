@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Movie;
-use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        // Mengambil data statistik utama
-        $data = [
-            'total_movies'    => Movie::count(),
-            'active_movies'   => Movie::where('status', 'now_showing')->count(),
-            'total_studios'   => Studio::count(),
-            // Asumsi role untuk operator bernama 'operator'
-            'total_operators' => User::whereHas('role', function ($query) {
-                $query->where('name', 'operator');
-            })->count(),
+        $user = User::findOrFail(Auth::id());
+        $role = $user->role;
 
-            // Mengambil 5 film terakhir yang ditambahkan
-            'recent_movies'   => Movie::latest()->take(5)->get(),
+        if ($role->name === 'admin') {
+            return $this->adminDashboard($request);
+        } else if ($role->name === 'cashier') {
+            return $this->cashierDashboard($request);
+        }
 
-            // Mengambil 5 studio beserta kapasitas totalnya
-            'studios'         => Studio::take(5)->get(),
-        ];
+        abort(403);
+    }
 
-        return spaRender($request, 'dashboard.index', $data);
+    private function adminDashboard(Request $request)
+    {
+        return spaRender($request, 'dashboard.admin');
+    }
+
+    private function cashierDashboard(Request $request)
+    {
+        return spaRender($request, 'dashboard.cashier');
     }
 }
