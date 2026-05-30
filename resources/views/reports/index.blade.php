@@ -54,7 +54,7 @@
                         <h6 class="text-muted mb-2">Total Tiket Terjual</h6>
                         <h3 class="mb-0 fw-bold">{{ number_format($total_tickets) }} <small class="fs-6 text-muted">Kursi</small></h3>
                     </div>
-                    <div class="bg-primary bg-opacity-10 text-primary rounded p-3">
+                    <div class="bg-info bg-opacity-10 text-info rounded p-3">
                         <i class="bi bi-ticket-perforated fs-1"></i>
                     </div>
                 </div>
