@@ -119,6 +119,39 @@ class DashboardController extends Controller
 
     private function cashierDashboard(Request $request)
     {
-        return spaRender($request, 'dashboard.cashier');
+        $userId = Auth::id();
+        $today = \Carbon\Carbon::today();
+
+        $baseQuery = Transaction::where('user_id', $userId)
+            ->whereDate('created_at', $today)
+            ->where('status', 'success');
+
+        $todayRevenue = (clone $baseQuery)->sum('total_price');
+        $todayTickets = (clone $baseQuery)->sum('total_tickets');
+        $todayTransactions = (clone $baseQuery)->count();
+
+        $recentTransactions = Transaction::with(['schedule.movie'])
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
+
+        $todaySchedules = Movie::whereHas('schedules', function ($query) use ($today) {
+                $query->where('show_date', $today->format('Y-m-d'));
+            })
+            ->with(['schedules' => function ($query) use ($today) {
+                $query->where('show_date', $today->format('Y-m-d'))
+                      ->with('studio')
+                      ->orderBy('start_time');
+            }])
+            ->get();
+
+        return spaRender($request, 'dashboard.cashier', compact(
+            'todayRevenue',
+            'todayTickets',
+            'todayTransactions',
+            'recentTransactions',
+            'todaySchedules'
+        ));
     }
 }
