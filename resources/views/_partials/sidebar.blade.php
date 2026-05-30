@@ -85,6 +85,17 @@
                 @role('admin')
                     <!-- Start::slide -->
                     <li class="slide">
+                        <a href="{{ route('reports.index') }}" class="side-menu__item {{ isActive('reports.*') }} spa-link">
+                            <span class="side-menu__icon">
+                                <i class='mdi mdi-chart-bar fs-4'></i>
+                            </span>
+                            <span class="side-menu__label">Laporan & Statistik</span>
+                        </a>
+                    </li>
+                    <!-- End::slide -->
+
+                    <!-- Start::slide -->
+                    <li class="slide">
                         <a href="{{ route('cashiers.index') }}" class="side-menu__item {{ isActive('cashiers.*') }} spa-link">
                             <span class="side-menu__icon">
                                 <i class='mdi mdi-account-cash-outline fs-4'></i>
@@ -101,17 +112,6 @@
                                 <i class='mdi mdi-calendar-text fs-4'></i>
                             </span>
                             <span class="side-menu__label">Jadwal Tayang</span>
-                        </a>
-                    </li>
-                    <!-- End::slide -->
-
-                    <!-- Start::slide -->
-                    <li class="slide">
-                        <a href="{{ route('reports.index') }}" class="side-menu__item {{ isActive('reports.*') }} spa-link">
-                            <span class="side-menu__icon">
-                                <i class='mdi mdi-chart-bar fs-4'></i>
-                            </span>
-                            <span class="side-menu__label">Laporan & Statistik</span>
                         </a>
                     </li>
                     <!-- End::slide -->
