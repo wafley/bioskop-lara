@@ -82,7 +82,7 @@
             <div class="card custom-card h-100">
                 <div class="card-header">
                     <h5 class="fw-bold mb-0">Film Terpopuler</h5>
-                    <small class="text-muted w-100">Top 5 film berdasarkan total tiket yang terjual</small>
+                    <small class="text-muted w-100">Statistik film berdasarkan total tiket yang terjual</small>
                 </div>
                 <div class="card-body">
                     <div id="popularMoviesChart" style="min-height: 300px;"></div>
