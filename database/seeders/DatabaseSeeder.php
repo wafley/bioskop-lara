@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             StudioSeeder::class,
             ScheduleSeeder::class,
             SettingSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }
