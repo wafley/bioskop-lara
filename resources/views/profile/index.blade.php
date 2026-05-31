@@ -37,17 +37,9 @@
                                 <input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}">
                             </div>
 
-                            <div class="mb-3">
+                            <div>
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" name="username" id="username" class="form-control" value="{{ $user->username }}">
-                            </div>
-
-                            <div class="form-check form-switch">
-                                <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status', $user->status) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status">
-                                    {{ old('status', $user->status) ? 'Aktif' : 'Tidak Aktif' }}
-                                </label>
                             </div>
                         </div>
                     </div>
