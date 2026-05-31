@@ -199,29 +199,25 @@
 @section('scripts')
     <script src="{{ asset('templates/libs/apexcharts/apexcharts.min.js') }}" data-partial="1"></script>
     <script data-partial="1">
-        (function() {
-            var popularMovies = @json($popularMovies);
-            var studioStats = @json($studioStats);
-            var peakHours = @json($peakHours);
+        $(function() {
+            const popularMovies = @json($popularMovies);
+            const studioStats = @json($studioStats);
+            const peakHours = @json($peakHours);
 
-            function renderCharts() {
+            const renderCharts = () => {
                 if (typeof ApexCharts === 'undefined') {
                     setTimeout(renderCharts, 100);
                     return;
                 }
 
                 // Area Chart - Peak Hours
-                var elPeakHours = document.querySelector("#peakHoursChart");
-                if (elPeakHours && peakHours.length > 0) {
-                    elPeakHours.innerHTML = '';
-                    var peakHoursCategories = peakHours.map(function(h) {
-                        return h.hour;
-                    });
-                    var peakHoursData = peakHours.map(function(h) {
-                        return parseInt(h.total_transactions);
-                    });
+                const $elPeakHours = $("#peakHoursChart");
+                if ($elPeakHours.length && peakHours.length > 0) {
+                    $elPeakHours.empty();
+                    const peakHoursCategories = peakHours.map(h => h.hour);
+                    const peakHoursData = peakHours.map(h => parseInt(h.total_transactions));
 
-                    var areaOptions = {
+                    const areaOptions = {
                         series: [{
                             name: 'Total Transaksi',
                             data: peakHoursData
@@ -229,57 +225,34 @@
                         chart: {
                             type: 'area',
                             height: 300,
-                            toolbar: {
-                                show: false
-                            }
+                            toolbar: { show: false }
                         },
                         colors: ['#0d6efd'],
-                        dataLabels: {
-                            enabled: false
-                        },
-                        stroke: {
-                            curve: 'smooth',
-                            width: 2
-                        },
+                        dataLabels: { enabled: false },
+                        stroke: { curve: 'smooth', width: 2 },
                         xaxis: {
                             categories: peakHoursCategories,
-                            labels: {
-                                style: {
-                                    cssClass: 'text-muted fw-normal'
-                                }
-                            }
+                            labels: { style: { cssClass: 'text-muted fw-normal' } }
                         },
                         yaxis: {
-                            labels: {
-                                formatter: function(val) {
-                                    return val.toFixed(0);
-                                }
-                            }
+                            labels: { formatter: val => val.toFixed(0) }
                         },
                         tooltip: {
-                            y: {
-                                formatter: function(val) {
-                                    return val + " transaksi";
-                                }
-                            }
+                            y: { formatter: val => `${val} transaksi` }
                         }
                     };
-                    var areaChart = new ApexCharts(elPeakHours, areaOptions);
+                    const areaChart = new ApexCharts($elPeakHours[0], areaOptions);
                     areaChart.render();
                 }
 
                 // Bar Chart - Popular Movies
-                var elMovies = document.querySelector("#popularMoviesChart");
-                if (elMovies && popularMovies.length > 0) {
-                    elMovies.innerHTML = '';
-                    var movieNames = popularMovies.map(function(m) {
-                        return m.title;
-                    });
-                    var movieTickets = popularMovies.map(function(m) {
-                        return parseInt(m.total_tickets);
-                    });
+                const $elMovies = $("#popularMoviesChart");
+                if ($elMovies.length && popularMovies.length > 0) {
+                    $elMovies.empty();
+                    const movieNames = popularMovies.map(m => m.title);
+                    const movieTickets = popularMovies.map(m => parseInt(m.total_tickets));
 
-                    var barOptions = {
+                    const barOptions = {
                         series: [{
                             name: 'Tiket Terjual',
                             data: movieTickets
@@ -287,67 +260,44 @@
                         chart: {
                             type: 'bar',
                             height: 300,
-                            toolbar: {
-                                show: false
-                            }
+                            toolbar: { show: false }
                         },
                         plotOptions: {
-                            bar: {
-                                borderRadius: 4,
-                                horizontal: true,
-                                distributed: true
-                            }
+                            bar: { borderRadius: 4, horizontal: true, distributed: true }
                         },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        xaxis: {
-                            categories: movieNames,
-                        },
-                        legend: {
-                            show: false
-                        }
+                        dataLabels: { enabled: false },
+                        xaxis: { categories: movieNames },
+                        legend: { show: false }
                     };
-                    var barChart = new ApexCharts(elMovies, barOptions);
+                    const barChart = new ApexCharts($elMovies[0], barOptions);
                     barChart.render();
                 }
 
                 // Pie Chart - Studio Stats
-                var elStudios = document.querySelector("#studioStatsChart");
-                if (elStudios && studioStats.length > 0) {
-                    elStudios.innerHTML = '';
-                    var studioNames = studioStats.map(function(s) {
-                        return s.name;
-                    });
-                    var studioTickets = studioStats.map(function(s) {
-                        return parseInt(s.total_tickets);
-                    });
+                const $elStudios = $("#studioStatsChart");
+                if ($elStudios.length && studioStats.length > 0) {
+                    $elStudios.empty();
+                    const studioNames = studioStats.map(s => s.name);
+                    const studioTickets = studioStats.map(s => parseInt(s.total_tickets));
 
-                    var pieOptions = {
+                    const pieOptions = {
                         series: studioTickets,
-                        chart: {
-                            type: 'pie',
-                            height: 300
-                        },
+                        chart: { type: 'pie', height: 300 },
                         labels: studioNames,
                         responsive: [{
                             breakpoint: 480,
                             options: {
-                                chart: {
-                                    width: 200
-                                },
-                                legend: {
-                                    position: 'bottom'
-                                }
+                                chart: { width: 200 },
+                                legend: { position: 'bottom' }
                             }
                         }]
                     };
-                    var pieChart = new ApexCharts(elStudios, pieOptions);
+                    const pieChart = new ApexCharts($elStudios[0], pieOptions);
                     pieChart.render();
                 }
-            }
+            };
 
             renderCharts();
-        })();
+        });
     </script>
 @endsection

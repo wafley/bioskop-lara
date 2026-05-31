@@ -96,10 +96,10 @@
 
     <script data-partial="1">
         $(function() {
-            // Initialize movie select
-            const movieSelect = document.getElementById('movie');
-            if (movieSelect) {
-                new Choices(movieSelect, {
+            // Initialize choices using jQuery
+            const $movieSelect = $('#movie');
+            if ($movieSelect.length) {
+                new Choices($movieSelect[0], {
                     searchEnabled: true,
                     placeholder: true,
                     placeholderValue: 'Pilih Movie',
@@ -107,10 +107,9 @@
                 });
             }
 
-            // Initialize studio select
-            const studioSelect = document.getElementById('studio');
-            if (studioSelect) {
-                new Choices(studioSelect, {
+            const $studioSelect = $('#studio');
+            if ($studioSelect.length) {
+                new Choices($studioSelect[0], {
                     removeItemButton: true,
                     searchEnabled: true,
                     placeholder: true,
@@ -118,48 +117,38 @@
                     position: "bottom",
                 });
             }
-        });
-    </script>
 
-    <script data-partial="1">
-        const movieDurations = @json($movies->mapWithKeys(fn($m) => [$m->id => (int) $m->duration]));
-    </script>
+            // Price auto calculation logic
+            const $showDateInput = $('#show_date');
+            const $priceDisplay = $('#price_display');
 
-    <script data-partial="1">
-        const showDateInput = document.getElementById('show_date');
-        const studioSelect = document.getElementById('studio'); // Tambahkan ini
-        const priceDisplay = document.getElementById('price_display');
+            const setAutoPrice = () => {
+                const dateVal = $showDateInput.val();
+                const studioVal = $studioSelect.find('option:selected').text() || '';
 
-        function setAutoPrice() {
-            const dateVal = showDateInput.value;
-            const studioVal = studioSelect.options[studioSelect.selectedIndex]?.text || '';
+                if (dateVal?.length === 10) {
+                    const [dayStr, monthStr, yearStr] = dateVal.split("-");
+                    const date = new Date(yearStr, monthStr - 1, dayStr);
+                    const day = date.getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
 
-            if (dateVal.length === 10) {
-                const parts = dateVal.split("-");
-                const date = new Date(parts[2], parts[1] - 1, parts[0]);
-                const day = date.getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
+                    let price = 40000;
+                    if (day === 5) price = 50000;
+                    if ([0, 6].includes(day)) price = 65000;
 
-                // 1. Logic Hari (Sesuai Service)
-                let price = 40000;
-                if (day === 5) price = 50000;
-                if (day === 0 || day === 6) price = 65000;
+                    if (/(VIP|Premiere|IMAX)/i.test(studioVal)) {
+                        price += 35000;
+                    }
 
-                // 2. Tambahan Studio (Sesuai Service)
-                if (studioVal.includes('VIP') || studioVal.includes('Premiere') || studioVal.includes('IMAX')) {
-                    price += 35000;
+                    $priceDisplay.text(new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        maximumFractionDigits: 0
+                    }).format(price));
                 }
+            };
 
-                // Update Tampilan (Format Rupiah)
-                priceDisplay.innerText = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    maximumFractionDigits: 0
-                }).format(price);
-            }
-        }
-
-        // Jalankan saat tanggal diisi atau studio dipilih
-        $(showDateInput).on('input', setAutoPrice);
-        $(studioSelect).on('change', setAutoPrice);
+            $showDateInput.on('input', setAutoPrice);
+            $studioSelect.on('change', setAutoPrice);
+        });
     </script>
 @endsection

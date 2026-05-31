@@ -103,10 +103,10 @@
 
     <script data-partial="1">
         $(function() {
-            // Initialize movie select
-            const movieSelect = document.getElementById('movie');
-            if (movieSelect) {
-                new Choices(movieSelect, {
+            // Initialize choices using jQuery
+            const $movieSelect = $('#movie');
+            if ($movieSelect.length) {
+                new Choices($movieSelect[0], {
                     searchEnabled: true,
                     placeholder: true,
                     placeholderValue: 'Pilih Movie',
@@ -114,10 +114,9 @@
                 });
             }
 
-            // Initialize studio select
-            const studioSelect = document.getElementById('studio');
-            if (studioSelect) {
-                new Choices(studioSelect, {
+            const $studioSelect = $('#studio');
+            if ($studioSelect.length) {
+                new Choices($studioSelect[0], {
                     removeItemButton: true,
                     searchEnabled: true,
                     placeholder: true,
@@ -125,33 +124,28 @@
                     position: "bottom",
                 });
             }
+
+            // Price auto calculation logic
+            const $priceInput = $('#price');
+            const $showDateInput = $('#show_date');
+
+            const setAutoPrice = () => {
+                const dateVal = $showDateInput.val();
+                
+                if (dateVal?.length === 10) {
+                    const [dayStr, monthStr, yearStr] = dateVal.split("-");
+                    const date = new Date(yearStr, monthStr - 1, dayStr);
+                    const day = date.getDay();
+
+                    let price = 40000;
+                    if (day === 5) price = 50000;
+                    if ([0, 6].includes(day)) price = 65000;
+
+                    $priceInput.val(price).trigger('input');
+                }
+            };
+
+            $showDateInput.on('input', setAutoPrice);
         });
-    </script>
-
-    <script data-partial="1">
-        const movieDurations = @json($movies->mapWithKeys(fn($m) => [$m->id => (int) $m->duration]));
-    </script>
-
-    <script data-partial="1">
-        const priceInput = document.getElementById('price');
-        const showDateInput = document.getElementById('show_date');
-
-        function setAutoPrice() {
-            const dateVal = showDateInput.value;
-            if (dateVal.length === 10) {
-                const parts = dateVal.split("-");
-                const date = new Date(parts[2], parts[1] - 1, parts[0]);
-                const day = date.getDay();
-
-                let price = 40000;
-                if (day === 6) price = 50000;
-                if (day === 0 || day === 6) price = 65000;
-
-                priceInput.value = price;
-                $(priceInput).trigger('input');
-            }
-        }
-
-        $(showDateInput).on('input', setAutoPrice);
     </script>
 @endsection
