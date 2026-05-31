@@ -59,35 +59,34 @@ With dedicated interfaces for both **Administrators** and **Cashiers**, the syst
 
 ### 1. **Clone the repository**
 
-    ```bash
-      git clone https://github.com/wafley/bioskop-lara.git
-      cd bioskop-lara
-    ```
+```bash
+  git clone https://github.com/wafley/bioskop-lara.git
+  cd bioskop-lara
+```
 
 ### 2. **Install dependencies**
 
-    ```bash
-      composer update
-    ```
+```bash
+  composer update
+```
 
 ### 3. **Environment Setup**
 
-    ```bash
-      cp .env.example .env
-      php artisan key:generate
-    ```
+```bash
+  cp .env.example .env
+  php artisan key:generate
+```
 
-    _Configure your database credentials in the `.env` file._
+_Configure your database credentials in the `.env` file._
 
 ### 4. **Database Migration & Seeding**
 
 This will populate the database with dummy movies, studios, schedules, and users.
 
-    ```bash
-      php artisan migrate
-      php artisan db:seed DatabaseSeeder
-
-    ```
+```bash
+  php artisan migrate
+  php artisan db:seed DatabaseSeeder
+```
 
 ### 4. Setup Assets (Important)
 
@@ -100,9 +99,9 @@ Since image assets and frontend libraries are not included in the Git repository
 
 ### 6. **Run the Application**
 
-    ```bash
-      php artisan serve
-    ```
+```bash
+php artisan serve
+```
 
 ## Default Credentials (Seeded)
 
