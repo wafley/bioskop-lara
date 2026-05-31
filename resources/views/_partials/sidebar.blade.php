@@ -100,7 +100,7 @@
                             <span class="side-menu__icon">
                                 <i class='mdi mdi-account-cash-outline fs-4'></i>
                             </span>
-                            <span class="side-menu__label">Data Kasir</span>
+                            <span class="side-menu__label">Kasir</span>
                         </a>
                     </li>
                     <!-- End::slide -->
