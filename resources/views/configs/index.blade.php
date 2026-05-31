@@ -18,10 +18,11 @@
                             <div class="mb-3">
                                 @php
                                     $value = old($key, $settings[$key] ?? '');
+                                    $isCurrency = str_ends_with($key, 'prices') || str_ends_with($key, 'surcharge');
                                 @endphp
 
                                 <label for="{{ $key }}" class="form-label">{{ $field['label'] }}</label>
-                                <input type="{{ $field['type'] }}" name="{{ $key }}" id="{{ $key }}" class="form-control" value="{{ $value }}">
+                                <input type="{{ $isCurrency ? 'text' : $field['type'] }}" name="{{ $key }}" id="{{ $key }}" class="form-control {{ $isCurrency ? 'currency-input' : '' }}" value="{{ $value }}">
                             </div>
                         @endforeach
                     </div>

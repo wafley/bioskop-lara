@@ -31,7 +31,24 @@ function showToast(icon, message, timer = 3000) {
     });
 }
 
-// Input Price handler
-$("#price, #amount_paid").on("input", function () {
-    this.value = this.value.replace(/[^0-9]/g, "");
+// Global currency input formatter
+$(document).on("input", ".currency-input", function () {
+    let val = this.value.replace(/[^0-9]/g, "");
+    if (val === "") {
+        this.value = "";
+        return;
+    }
+    this.value = new Intl.NumberFormat("id-ID").format(parseInt(val, 10));
+});
+
+// Format on load if value exists
+$(document).ready(function() {
+    $(".currency-input").each(function() {
+        if ($(this).val()) {
+            let val = $(this).val().replace(/[^0-9]/g, "");
+            if (val !== "") {
+                $(this).val(new Intl.NumberFormat("id-ID").format(parseInt(val, 10)));
+            }
+        }
+    });
 });

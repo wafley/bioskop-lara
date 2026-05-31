@@ -63,7 +63,7 @@
                                 <span class="input-group-text">
                                     Rp.
                                 </span>
-                                <input type="text" class="form-control" id="price" name="price" value="{{ (int) $schedule->price }}" readonly>
+                                <input type="text" class="form-control currency-input" id="price" name="price" value="{{ (int) $schedule->price }}" readonly>
                             </div>
                             <span class="form-text text-muted">Harga tiket akan otomatis diisi sesuai dengan hari penayangan.</span>
                         </div>
@@ -148,6 +148,7 @@
                 if (day === 0 || day === 6) price = 65000;
 
                 priceInput.value = price;
+                $(priceInput).trigger('input');
             }
         }
 

@@ -137,7 +137,7 @@
                             <label for="amount_paid" class="form-label">Nominal Uang Diterima</label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp</span>
-                                <input type="number" name="amount_paid" id="amount_paid" class="form-control" placeholder="0" min="0">
+                                <input type="text" name="amount_paid" id="amount_paid" class="form-control currency-input" placeholder="0">
                             </div>
                             <div class="form-text small" id="change-amount-label">Kembalian: Rp 0</div>
                         </div>

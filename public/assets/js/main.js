@@ -61,6 +61,12 @@ $(document).on("submit", "form[data-ajax='true']", function (e) {
 
     let formData = new FormData(this);
 
+    // Unmask currency inputs
+    $form.find(".currency-input").each(function () {
+        let rawValue = $(this).val().replace(/[^0-9]/g, "");
+        formData.set($(this).attr("name"), rawValue);
+    });
+
     let btnSubmit = $form.find("button[type=submit]");
     let btnText = btnSubmit.text();
     let loadingText = btnSubmit.data("loading-text") || "Loading...";
