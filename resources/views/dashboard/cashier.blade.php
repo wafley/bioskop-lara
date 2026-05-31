@@ -7,29 +7,33 @@
 
 @section('content')
     <!-- Welcome Header -->
-    <div class="row mb-4">
+    <div class="row">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                <div>
-                    <h4 class="fw-bold mb-1">Halo, {{ Auth::user()->name }}! 👋</h4>
-                    <p class="text-muted mb-0">Selamat bekerja! Berikut adalah ringkasan performa Anda hari ini.</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('booking.index') }}" class="btn btn-primary spa-link">
-                        <i class="bi bi-ticket-detailed me-1"></i> Jual Tiket
-                    </a>
-                    <a href="{{ route('transactions.index') }}" class="btn btn-outline-secondary spa-link">
-                        <i class="bi bi-clock-history me-1"></i> Riwayat Transaksi
-                    </a>
+            <div class="card custom-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                            <h4 class="fw-bold mb-1">Halo, {{ Auth::user()->name }}! 👋</h4>
+                            <p class="text-muted mb-0">Selamat bekerja! Berikut adalah ringkasan performa Anda hari ini.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('booking.index') }}" class="btn btn-primary spa-link">
+                                <i class="bi bi-ticket-detailed me-1"></i> Jual Tiket
+                            </a>
+                            <a href="{{ route('transactions.index') }}" class="btn btn-outline-secondary spa-link">
+                                <i class="bi bi-clock-history me-1"></i> Riwayat Transaksi
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- KPI Cards -->
-    <div class="row mb-4 g-3">
+    <div class="row">
         <div class="col-12 col-md-4">
-            <div class="card custom-card h-100">
+            <div class="card custom-card">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-2">Pendapatan Hari Ini</h6>
@@ -43,7 +47,7 @@
         </div>
 
         <div class="col-12 col-md-4">
-            <div class="card custom-card h-100">
+            <div class="card custom-card">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-2">Tiket Terjual Hari Ini</h6>
@@ -57,7 +61,7 @@
         </div>
 
         <div class="col-12 col-md-4">
-            <div class="card custom-card h-100">
+            <div class="card custom-card">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-2">Transaksi Hari Ini</h6>
@@ -72,7 +76,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="row g-3">
+    <div class="row">
         <!-- Jadwal Tayang Hari Ini -->
         <div class="col-12 col-lg-8">
             <div class="card custom-card h-100">
@@ -99,16 +103,18 @@
                                         </td>
                                         <td class="pt-3 pb-2">
                                             <div class="d-flex flex-wrap gap-2">
-                                                @foreach($movie->schedules as $schedule)
+                                                @foreach ($movie->schedules as $schedule)
                                                     @php
                                                         $isPast = \Carbon\Carbon::parse($schedule->start_time)->isPast();
                                                     @endphp
-                                                    @if(!$isPast)
-                                                        <a href="{{ route('booking.show', $schedule->uuid) }}" class="btn btn-sm btn-outline-primary spa-link mb-2" title="{{ $schedule->studio->name }} - {{ formatPrice($schedule->price) }}">
+                                                    @if (!$isPast)
+                                                        <a href="{{ route('booking.show', $schedule->uuid) }}" class="btn btn-sm btn-outline-primary spa-link mb-2"
+                                                            title="{{ $schedule->studio->name }} - {{ formatPrice($schedule->price) }}">
                                                             {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}
                                                         </a>
                                                     @else
-                                                        <span class="btn btn-sm btn-outline-secondary disabled mb-2" title="{{ $schedule->studio->name }} - {{ formatPrice($schedule->price) }}">
+                                                        <span class="btn btn-sm btn-outline-secondary disabled mb-2"
+                                                            title="{{ $schedule->studio->name }} - {{ formatPrice($schedule->price) }}">
                                                             {{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }} (Berakhir)
                                                         </span>
                                                     @endif
