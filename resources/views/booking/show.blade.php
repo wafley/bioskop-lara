@@ -252,7 +252,8 @@
                     return;
                 }
 
-                const paid = parseInt($amountPaid.val()) || 0;
+                const rawPaid = $amountPaid.val().replace(/\D/g, '');
+                const paid = parseInt(rawPaid) || 0;
                 const change = paid - total;
 
                 if (paid > 0) {
