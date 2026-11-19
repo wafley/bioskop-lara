@@ -13,11 +13,11 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
-// Auto-run migrations once in background if database is configured
+// Auto-run migrations & essential seeds once in background if database is configured
 if (!file_exists($migratedLock = __DIR__.'/../storage/framework/.migrated')) {
     if (getenv('DATABASE_URL') || getenv('DB_DATABASE') || getenv('DB_HOST')) {
         @touch($migratedLock);
-        @exec('php '.__DIR__.'/../artisan migrate --force > /dev/null 2>&1 &');
+        @exec('php '.__DIR__.'/../artisan migrate --force && php '.__DIR__.'/../artisan db:seed --class=RoleSeeder --force && php '.__DIR__.'/../artisan db:seed --class=UserSeeder --force && php '.__DIR__.'/../artisan db:seed --class=SettingSeeder --force > /dev/null 2>&1 &');
     }
 }
 
