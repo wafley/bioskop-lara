@@ -6,6 +6,7 @@ use App\Observers\ActivityObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (
+            config('app.env') === 'production' ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+            (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+            str_starts_with((string) config('app.url'), 'https://')
+        ) {
+            URL::forceScheme('https');
+        }
         // Implement Activity Observer to model
         \App\Models\Role::observe(ActivityObserver::class);
         \App\Models\User::observe(ActivityObserver::class);
