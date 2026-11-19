@@ -6,6 +6,28 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));
 
+// Auto-expand PORT in CLI environment (e.g., Cloudvea / Render / Heroku)
+if (isset($_SERVER['argv']) && in_array('serve', $_SERVER['argv'])) {
+    $targetPort = getenv('PORT') ?: '8080';
+    $hasPort = false;
+    foreach ($_SERVER['argv'] as $key => $arg) {
+        if ($arg === '--port=$PORT' || $arg === '--port=${PORT}' || str_starts_with($arg, '--port=$')) {
+            $_SERVER['argv'][$key] = '--port=' . $targetPort;
+            $hasPort = true;
+        } elseif (str_starts_with($arg, '--port=')) {
+            $hasPort = true;
+        }
+    }
+    if (!$hasPort) {
+        $_SERVER['argv'][] = '--port=' . $targetPort;
+    }
+
+    // Auto-run migrations asynchronously in background so web server is never blocked
+    if ((getenv('DB_DATABASE') || getenv('DATABASE_URL') || getenv('DB_CONNECTION') === 'sqlite') && !in_array('--no-auto-migrate', $_SERVER['argv'])) {
+        @exec('php artisan migrate --force > /dev/null 2>&1 &');
+    }
+}
+
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 
