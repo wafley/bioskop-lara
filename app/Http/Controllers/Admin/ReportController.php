@@ -35,10 +35,10 @@ class ReportController extends Controller
             ->selectRaw('DATE(created_at) as date')
             ->selectRaw('SUM(total_price) as revenue')
             ->selectRaw('SUM(total_tickets) as tickets')
-            ->groupBy('date')
-            ->orderBy('date')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy(DB::raw('DATE(created_at)'))
             ->get()
-            ->keyBy('date');
+            ->keyBy(fn($item) => Carbon::parse($item->date)->format('Y-m-d'));
 
         $dailyData = [];
         $currentDate = $queryStartDate->copy();

@@ -31,10 +31,10 @@ class CashierController extends Controller
 
     public function data(Request $request)
     {
-        $cashiers = User::with('role')->where('role_id', $this->role->id)->orderByRaw('status = 1 DESC')->orderBy('updated_at', 'desc');
+        $cashiers = User::with('role')->where('role_id', $this->role->id)->orderByDesc('status')->orderBy('updated_at', 'desc');
 
         if ($request->status !== null && $request->status !== '') {
-            $cashiers->where('status', $request->status);
+            $cashiers->where('status', filter_var($request->status, FILTER_VALIDATE_BOOLEAN));
         }
 
         return DataTables::of($cashiers)

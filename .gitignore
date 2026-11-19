@@ -27,3 +27,6 @@ Thumbs.db
 # AI Agents / Local Tools Runtime
 .agents/
 skills-lock.json
+
+# Archive / Deployment Artifacts
+*.zip

@@ -27,7 +27,7 @@ class StudioController extends Controller
         $query = Studio::query()->latest('updated_at');
 
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where('status', filter_var($request->status, FILTER_VALIDATE_BOOLEAN));
         }
 
         if ($request->filled('search')) {

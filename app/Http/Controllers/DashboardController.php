@@ -7,8 +7,10 @@ use App\Models\Schedule;
 use App\Models\Studio;
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -82,25 +84,33 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        $timeSlots = Schedule::selectRaw("CONCAT(TIME_FORMAT(start_time, '%H:%i'), ' - ', TIME_FORMAT(end_time, '%H:%i')) as time_slot")
+        $schedules = Schedule::select('start_time', 'end_time')
             ->distinct()
             ->orderBy('start_time')
-            ->pluck('time_slot');
+            ->get();
 
-        $peakHoursData = Transaction::query()
-            ->selectRaw("CONCAT(TIME_FORMAT(schedules.start_time, '%H:%i'), ' - ', TIME_FORMAT(schedules.end_time, '%H:%i')) as time_slot")
-            ->selectRaw('COUNT(transactions.id) as total_transactions')
+        $timeSlots = $schedules->map(function ($schedule) {
+            return Carbon::parse($schedule->start_time)->format('H:i') . ' - ' . Carbon::parse($schedule->end_time)->format('H:i');
+        })->unique()->values();
+
+        $transactions = Transaction::query()
+            ->select('schedules.start_time', 'schedules.end_time', DB::raw('COUNT(transactions.id) as total_transactions'))
             ->join('schedules', 'transactions.schedule_id', '=', 'schedules.id')
             ->where('transactions.status', 'success')
-            ->groupBy('time_slot')
-            ->get()
-            ->keyBy('time_slot');
+            ->groupBy('schedules.start_time', 'schedules.end_time')
+            ->get();
+
+        $peakHoursData = [];
+        foreach ($transactions as $t) {
+            $slot = Carbon::parse($t->start_time)->format('H:i') . ' - ' . Carbon::parse($t->end_time)->format('H:i');
+            $peakHoursData[$slot] = ($peakHoursData[$slot] ?? 0) + (int) $t->total_transactions;
+        }
 
         $peakHours = [];
         foreach ($timeSlots as $slot) {
             $peakHours[] = [
                 'hour' => $slot,
-                'total_transactions' => isset($peakHoursData[$slot]) ? $peakHoursData[$slot]->total_transactions : 0
+                'total_transactions' => $peakHoursData[$slot] ?? 0
             ];
         }
 
