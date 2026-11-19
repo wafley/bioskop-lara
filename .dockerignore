@@ -1,0 +1,9 @@
+.git
+.github
+.agents
+node_modules
+vendor
+storage/logs/*.log
+*.zip
+.env
+.phpunit.cache
