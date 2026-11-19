@@ -28,7 +28,8 @@ zip -r "$ZIP_NAME" . \
   -x "storage/logs/*.log" \
   -x "bootstrap/cache/*.php" \
   -x ".phpunit.cache/*" \
-  -x "tests/*"
+  -x "tests/*" \
+  -x "public/templates/*"
 
 echo "==> Berhasil dibuat: $ZIP_NAME"
 ls -lh "$ZIP_NAME"
